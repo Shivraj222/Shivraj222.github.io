@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { writingSections } from '../../data/siteContent';
+---
+<BaseLayout title="Writings & ideas" description="Essays, articles, recommendations, and reflections on ideas and life." active="writings">
+  <section class="page-intro">
+    <div class="container">
+      <span class="eyebrow kicker">Writings & ideas / beyond the notebook</span>
+      <h1>Thoughts need<br /><span style="color: var(--coral)">somewhere to go.</span></h1>
+      <p class="intro-copy">Not everything worth keeping is a research result. This is the home for essays, Medium articles, recommendations, reflections, and ideas that are still finding their shape.</p>
+      <div class="intro-meta"><span>Articles</span><span>Reading notes</span><span>Reflections</span></div>
+    </div>
+  </section>
+  <section class="section-tight" style="padding-top: 0">
+    <div class="container">
+      <div class="notice"><span class="notice-mark">i</span><div>The sections below are an organizational framework, not a list of existing essays. As you add pieces, each can have its own title, short intro, date, tags, and link to Medium or another publication.</div></div>
+      <div class="writing-stack">
+        {writingSections.map((section) => (
+          <article class="writing-row" data-reveal>
+            <div class="writing-number">{section.number}</div>
+            <div><h2>{section.title}</h2><p class="subheading">{section.subtitle}</p></div>
+            <div><p>{section.body}</p><div class="inline-chip-list">{section.examples.map((example) => <span>{example}</span>)}</div></div>
+          </article>
+        ))}
+      </div>
+      <div class="writing-note" data-reveal>
+        <div><span class="eyebrow">An editorial rule</span><h3>Keep the context with the thought.</h3></div>
+        <p>For published writing, link to the original and note where it appeared. For personal reflections, date them when time changes their meaning. For recommendations, distinguish what you endorse from what you are simply exploring.</p>
+      </div>
+    </div>
+  </section>
+  <section class="closing-banner"><div class="container closing-inner"><div><span class="eyebrow">Words, arguments, fragments</span><h2>A thought can be unfinished and still worth recording.</h2></div><a class="button" href="../research/">Back to research ↗</a></div></section>
+</BaseLayout>

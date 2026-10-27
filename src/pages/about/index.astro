@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="About" description="The intent behind this research-first personal website." active="about">
+  <section class="page-intro">
+    <div class="container">
+      <span class="eyebrow kicker">About / why this exists</span>
+      <h1>A public map of<br /><span style="color: var(--green)">what I’m working through.</span></h1>
+      <p class="intro-copy">A personal website should be more than a list of links. It should make the shape of someone’s work understandable — what they study, what they make, and what they are still trying to figure out.</p>
+    </div>
+  </section>
+  <section class="section-tight" style="padding-top: 0">
+    <div class="container about-grid">
+      <div class="about-statement"><span class="eyebrow kicker">The central thread</span><h2>Curiosity, with <em>structure.</em></h2><p style="color:var(--ink-soft);max-width:360px">A research-first identity, with room for the rest of a creative and intellectual life.</p></div>
+      <div class="about-copy">
+        <p>The main focus here is <strong>theoretical physics</strong>, especially quantum gravity, AdS/CFT, and high-energy theory. The goal is to make research material easy to navigate: projects connect to calculations, calculations connect to papers, and papers sit alongside the questions that motivated them.</p>
+        <p>The archive is intentionally broader than polished publications. Working notes, exploratory derivations, and discontinued ideas can be useful to share when their status and limitations are made clear. An unfinished document should never be mistaken for a validated result.</p>
+        <p>Outside research, the site also collects writing, media channels, photography, painting, and other creative interests. These sections are not distractions from the professional identity; they are simply separate parts of the same person’s public work.</p>
+        <p>This first version is a <strong>working prototype</strong>. Sample entries, channel descriptions, and placeholder artwork are there to demonstrate the structure and should be replaced before the site is announced publicly.</p>
+        <div class="about-list">
+          <div class="about-list-row"><span>Research lens</span><strong>Quantum gravity · AdS/CFT · high-energy theory</strong></div>
+          <div class="about-list-row"><span>Archive principle</span><strong>Everything has a home; status stays visible.</strong></div>
+          <div class="about-list-row"><span>Document access</span><strong>External PDF and source links — no embedded viewers.</strong></div>
+          <div class="about-list-row"><span>Site philosophy</span><strong>Simple to maintain, easy to extend, free to host.</strong></div>
+        </div>
+        <div class="button-row"><a class="button" href={`${base}research/`}>Enter the research archive ↗</a><a class="button secondary" href={`${base}channels/`}>Explore media channels</a></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

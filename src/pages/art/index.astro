@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { artCategories } from '../../data/siteContent';
+---
+<BaseLayout title="Art & photography" description="A home for photography, paintings, creative work, and visual experiments." active="art">
+  <section class="page-intro">
+    <div class="container">
+      <span class="eyebrow kicker">Art & photography / the studio</span>
+      <h1>A place for what<br /><span style="color: var(--coral)">doesn’t need equations.</span></h1>
+      <p class="intro-copy">Photographs, paintings, sketches, and small visual experiments. This area gives creative work its own room without making it compete with the research archive.</p>
+      <div class="intro-meta"><span>Photography</span><span>Painting</span><span>Visual experiments</span><span>Work in progress</span></div>
+    </div>
+  </section>
+  <section class="section-tight" style="padding-top: 0">
+    <div class="container">
+      <div class="notice"><span class="notice-mark">i</span><div>The artwork-shaped panels below are temporary visual placeholders, not your photographs or paintings. Replace them with your own images and captions when you are ready. The layout is designed to support small collections and larger series.</div></div>
+      <div class="art-grid">
+        {artCategories.map((category) => (
+          <article class="art-card" data-reveal>
+            <div class:list={['art-visual', category.className]} aria-label={`${category.title} image placeholder`} role="img">
+              <span class="art-visual-label">Visual placeholder / {category.number}</span>
+            </div>
+            <div class="art-caption"><span class="eyebrow kicker">Collection {category.number}</span><h2>{category.title}</h2><p>{category.description}</p></div>
+          </article>
+        ))}
+      </div>
+      <div class="art-note">A good default for each piece: title, date (optional), medium or location (optional), and one sentence of context. Let the work lead; keep the metadata light.</div>
+    </div>
+  </section>
+</BaseLayout>

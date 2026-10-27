@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ResearchCard from '../../components/ResearchCard.astro';
+import { researchEntries, researchCategories } from '../../data/siteContent';
+const base = import.meta.env.BASE_URL;
+const sampleCount = researchEntries.filter((entry) => entry.sample).length;
+---
+<BaseLayout title="Research archive" description="Projects, publications, preprints, technical notes, presentations, and reading references." active="research">
+  <section class="page-intro">
+    <div class="container">
+      <span class="eyebrow kicker">Research & academia / the archive</span>
+      <h1>Follow the question.<br /><span style="color: var(--green)">Find the working.</span></h1>
+      <p class="intro-copy">A connected archive for research directions, formal outputs, technical calculations, academic writing, talks, and the literature behind them. Each entry has a clear status and links to related work.</p>
+      <div class="intro-meta"><span>Quantum gravity</span><span>AdS/CFT</span><span>High-energy theory</span><span>Public archive</span></div>
+      <div class="archive-stats">
+        <div class="stat-box"><strong>07</strong><span>Distinct material types</span></div>
+        <div class="stat-box"><strong>{researchEntries.length.toString().padStart(2, '0')}</strong><span>Illustrative records in this first draft</span></div>
+        <div class="stat-box"><strong>↗ PDF</strong><span>External document links only</span></div>
+      </div>
+      <div class="notice"><span class="notice-mark">!</span><div><strong>These are prototype records, not a bibliography.</strong> The {sampleCount} sample entries below show the planned organization and labels. Replace titles and descriptions with the exact state of your work; add an external PDF or source link when one exists. No sample entry should be read as a claim of publication or validation.</div></div>
+    </div>
+  </section>
+
+  <section class="section-tight" style="padding-top: 0">
+    <div class="container">
+      <div class="filter-panel" aria-label="Filter research archive">
+        <div class="field"><label for="archive-search">Search the archive</label><input id="archive-search" type="search" placeholder="Try a topic, title, or keyword…" autocomplete="off" /></div>
+        <div class="field"><label for="type-filter">Material type</label><select id="type-filter"><option value="all">All material types</option>{researchCategories.map((category) => <option value={category.key}>{category.label}</option>)}</select></div>
+        <div class="field"><label for="status-filter">Work status</label><select id="status-filter"><option value="all">All statuses</option><option value="published">Published</option><option value="preprint">Preprint</option><option value="submitted">Submitted</option><option value="in preparation">In preparation</option><option value="working">Working archive (ongoing / exploratory / discontinued)</option><option value="ongoing">Ongoing</option><option value="exploratory">Exploratory</option><option value="completed">Completed</option><option value="discontinued">Discontinued</option></select></div>
+      </div>
+      <div class="archive-result-line"><span id="archive-count" aria-live="polite">Showing all records</span><button type="button" id="archive-reset">Reset filters ↺</button></div>
+      <div class="research-grid" id="research-results">
+        {researchEntries.map((entry) => <ResearchCard entry={entry} />)}
+        <div class="no-results" id="no-results" hidden>No entries match these filters. Try a broader search or reset the filters.</div>
+      </div>
+      <div class="section-heading" style="margin-top: 75px" data-reveal>
+        <div><span class="eyebrow kicker">The filing system</span><h2>One archive, several ways in.</h2></div>
+        <p>Document type describes what an item is. Work status describes where it stands. Maturity labels — such as working notes or polished note — describe how developed the document is.</p>
+      </div>
+      <div class="category-strip">
+        {researchCategories.map((category, index) => <a href={`${base}research/?type=${category.key}#research-results`}><span>{String(index + 1).padStart(2, '0')} / CATEGORY</span>{category.label} ↗</a>)}
+        <a href={`${base}research/?view=working#research-results`}><span>08 / CROSS-CUTTING VIEW</span>Working archive ↗</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    const search = document.querySelector('#archive-search');
+    const typeFilter = document.querySelector('#type-filter');
+    const statusFilter = document.querySelector('#status-filter');
+    const cards = Array.from(document.querySelectorAll('[data-research-card]'));
+    const count = document.querySelector('#archive-count');
+    const noResults = document.querySelector('#no-results');
+    const reset = document.querySelector('#archive-reset');
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedType = params.get('type');
+    const requestedView = params.get('view');
+    if (requestedType && typeFilter && Array.from(typeFilter.options).some((option) => option.value === requestedType)) {
+      typeFilter.value = requestedType;
+    }
+    if (requestedView === 'working' && statusFilter) statusFilter.value = 'working';
+
+    function updateArchive() {
+      const query = (search?.value || '').trim().toLowerCase();
+      const type = typeFilter?.value || 'all';
+      const status = statusFilter?.value || 'all';
+      let visible = 0;
+      cards.forEach((card) => {
+        const matchesQuery = !query || (card.dataset.search || '').includes(query);
+        const matchesType = type === 'all' || card.dataset.type === type;
+        const workingStatuses = ['ongoing', 'exploratory', 'discontinued', 'in preparation'];
+        const matchesStatus = status === 'all' || (status === 'working' ? workingStatuses.includes(card.dataset.status || '') : card.dataset.status === status);
+        const show = matchesQuery && matchesType && matchesStatus;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (count) count.textContent = `Showing ${visible} of ${cards.length} records`;
+      if (noResults) noResults.hidden = visible > 0;
+    }
+
+    search?.addEventListener('input', updateArchive);
+    typeFilter?.addEventListener('change', updateArchive);
+    statusFilter?.addEventListener('change', updateArchive);
+    reset?.addEventListener('click', () => {
+      if (search) search.value = '';
+      if (typeFilter) typeFilter.value = 'all';
+      if (statusFilter) statusFilter.value = 'all';
+      window.history.replaceState({}, '', window.location.pathname + '#research-results');
+      updateArchive();
+    });
+    updateArchive();
+  </script>
+</BaseLayout>
