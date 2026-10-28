@@ -649,3 +649,100 @@ main { min-height: 60vh; }
     font-size: clamp(1.1rem, 5vw, 1.5rem);
   }
 }
+
+/* =========================================================
+   RED + BLUE THEME OVERRIDE
+   Add this block at the VERY END of your existing global.css.
+   It changes colours only; it preserves layout, motion and content.
+   ========================================================= */
+
+:root {
+  --ink: #172844;
+  --ink-deep: #101827;
+  --ink-soft: #4d5c72;
+
+  --paper: #f4f6fa;
+  --paper-2: #e8edf5;
+  --white: #ffffff;
+
+  --line: rgba(23, 40, 68, 0.14);
+  --line-strong: rgba(23, 40, 68, 0.27);
+
+  --green: #3157a4;       /* existing variable reused as research blue */
+  --green-pale: #dce6f7;  /* existing variable reused as pale blue */
+  --yellow: #c74747;      /* existing variable reused as crimson accent */
+  --coral: #c74747;
+  --lilac: #dce6f7;
+  --blue: #a9c4ed;
+
+  color-scheme: light;
+}
+
+/* Global text and small highlights */
+::selection { background: #c74747; color: #ffffff; }
+.kicker,
+.card-type,
+.writing-row .subheading,
+.about-list-row span { color: #3157a4; }
+
+.text-link { border-bottom-color: #c74747; }
+.text-link:hover { color: #a52f38; border-color: #a52f38; }
+.hero h1 em,
+.about-statement h2 em { color: #3157a4; }
+.hero h1 em::after { background: #c74747; }
+.hero-note::before,
+.writing-number,
+.art-note { border-color: #c74747; }
+.hero-note::before { background: #c74747; }
+
+/* Header and footer */
+.site-header { background: rgba(16, 24, 39, 0.97); }
+.site-header .primary-nav a { color: #dce6f7; }
+.primary-nav a::after { background: #c74747; }
+.primary-nav a:hover,
+.primary-nav a.active { color: #ffffff; }
+.primary-nav a:hover::after,
+.primary-nav a.active::after { background: #c74747; }
+.primary-nav { --yellow: #c74747; }
+.primary-nav a::after { background: var(--yellow); }
+.primary-nav a:hover::after,
+.primary-nav a.active::after { background: var(--yellow); }
+.menu-toggle { border-color: rgba(255,255,255,.3); }
+.site-footer { background: #101827; }
+.site-footer .back-top { color: #f08080; }
+
+/* Buttons and dark feature panels */
+.button { background: #172844; border-color: #172844; color: #ffffff; }
+.button:hover { background: #3157a4; }
+.button.secondary { color: #172844; border-color: rgba(23,40,68,.3); }
+.button.secondary:hover { background: #e8edf5; }
+.sagan-section,
+.pale-blue-section { background: #101827; color: #f4f6fa; }
+.sagan-words .eyebrow,
+.sagan-words .quote-credit,
+.pale-blue-copy .eyebrow { color: #f08080; }
+.sagan-words .text-link { border-color: #f08080; }
+.sagan-words .text-link:hover { color: #f08080; }
+.closing-banner { background: #172844; }
+.closing-banner .eyebrow { color: #f08080; }
+.closing-banner .button { background: #c74747; border-color: #c74747; color: #ffffff; }
+.closing-banner .button:hover { background: #a52f38; }
+
+/* Homepage abstract art: blue base with restrained red */
+.orbit-panel::before { background: #cbdaf4; }
+.orbit-panel::after { background: #c74747; opacity: .58; mix-blend-mode: multiply; }
+.orbit-caption { background: #172844; box-shadow: 6px 7px 0 rgba(23,40,68,.12); }
+.hero-sticker { background: #c74747; color: #ffffff; }
+.portrait-frame::before { background: #3157a4; }
+.portrait-image { background: #dce6f7; }
+
+/* Research cards and controls */
+.notice { background: #edf1f8; border-color: rgba(49,87,164,.22); color: #263b5c; }
+.notice .notice-mark { border-color: #3157a4; }
+.field input,
+.field select { background: #f4f6fa; color: #172844; }
+.field input:focus,
+.field select:focus { outline-color: #c74747; }
+.archive-result-line button { border-bottom-color: #c74747; }
+.research-card:hover { box-shadow: 0 12px 35px rgba(23,40,68,.09); }
+.status-pill { color: #24553c; background: #e4f1e8; border-color: #c4dfce; }
