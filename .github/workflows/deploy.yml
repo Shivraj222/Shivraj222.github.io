@@ -1,3 +1,4 @@
+
 name: Deploy website to GitHub Pages
 
 on:
@@ -20,8 +21,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+
       - name: Build Astro site
         uses: withastro/action@v6
+        env:
+          PUBLIC_YOUTUBE_API_KEY: ${{ secrets.PUBLIC_YOUTUBE_API_KEY }}
 
   deploy:
     environment:
