@@ -1,33 +1,645 @@
+
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { writingSections } from '../../data/siteContent';
+
+const mediumProfile = 'https://medium.com/@shivrajdeshmukh218';
+const mediumFeed = 'https://medium.com/feed/@shivrajdeshmukh218';
+
+const fallbackArticles = [
+  {
+    title: 'What Really Happens As You Approach the Speed of Light?',
+    href: `${mediumProfile}/what-really-happens-as-you-approach-the-speed-of-light-16840697c153`,
+    date: '2025-06-06',
+    description:
+      'An exploration of special relativity and the limits imposed by the speed of light.',
+    image: '',
+    category: 'Physics',
+  },
+  {
+    title: 'Marcus Aurelius Changed How I See Life — Here’s Why',
+    href: `${mediumProfile}/marcus-aurelius-changed-how-i-see-life-heres-why-2e027cede252`,
+    date: '2025-05-11',
+    description:
+      'A reflection on Stoicism, Marcus Aurelius, and the effort to live with greater clarity and self-command.',
+    image: '',
+    category: 'Philosophy',
+  },
+  {
+    title: 'Why Life Feels So Empty: The Void No One Talks About!',
+    href: `${mediumProfile}/still-writing-it-dfb84ba092f2`,
+    date: '2025-05-20',
+    description:
+      'Thoughts on existentialism, the search for meaning, and living in a universe that offers no easy answers.',
+    image: '',
+    category: 'Philosophy',
+  },
+  {
+    title: 'The Strongest Man in Vinland Saga Hesitated to Draw His Sword — Here’s Why',
+    href: `${mediumProfile}/the-strongest-man-in-vinland-saga-hesitated-to-draw-his-sword-heres-why-0261989b2778`,
+    date: '',
+    description:
+      'A reflection on Vinland Saga, strength, restraint, and the meaning behind a warrior’s hesitation.',
+    image: '',
+    category: 'Anime & Ideas',
+  },
+  {
+    title: 'The Unmade Man: Lost Warrior',
+    href: `${mediumProfile}/the-unmade-man-lost-warrior-027e039ca490`,
+    date: '',
+    description:
+      'A piece exploring the image of the warrior, the struggle to become oneself, and what it means to be unfinished.',
+    image: '',
+    category: 'Reflection',
+  },
+];
+
+function decodeXml(value = '') {
+  return value
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'");
+}
+
+function getTag(xml, tag) {
+  const escapedTag = tag.replace(':', '\\:');
+  const match = xml.match(
+    new RegExp(`<${escapedTag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${escapedTag}>`, 'i')
+  );
+
+  return match ? decodeXml(match[1]).trim() : '';
+}
+
+function getImage(item, content) {
+  const mediaMatch = item.match(
+    /<(?:media:thumbnail|media:content)\b[^>]*\burl=["']([^"']+)["']/i
+  );
+
+  if (mediaMatch) return decodeXml(mediaMatch[1]);
+
+  const enclosureMatch = item.match(
+    /<enclosure\b[^>]*\burl=["']([^"']+\.(?:jpg|jpeg|png|webp)(?:\?[^"']*)?)["']/i
+  );
+
+  if (enclosureMatch) return decodeXml(enclosureMatch[1]);
+
+  const imageMatch = content.match(
+    /<img\b[^>]*\bsrc=["']([^"']+)["']/i
+  );
+
+  return imageMatch ? decodeXml(imageMatch[1]) : '';
+}
+
+function stripHtml(value = '') {
+  return value
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function makeDescription(content) {
+  const text = stripHtml(content);
+
+  if (!text) return 'Read the original article on Medium.';
+
+  return text.length > 230
+    ? `${text.slice(0, 227).trimEnd()}…`
+    : text;
+}
+
+function getCategory(title) {
+  const lower = title.toLowerCase();
+
+  if (
+    lower.includes('speed of light') ||
+    lower.includes('relativity') ||
+    lower.includes('physics')
+  ) return 'Physics';
+
+  if (lower.includes('vinland saga')) return 'Anime & Ideas';
+
+  if (lower.includes('marcus aurelius')) return 'Philosophy';
+
+  if (
+    lower.includes('life feels so empty') ||
+    lower.includes('unmade man')
+  ) return 'Reflection';
+
+  return 'Medium article';
+}
+
+function cleanUrl(url) {
+  return url.replace(/\?sharedUserId=.*$/i, '');
+}
+
+let articles = [];
+let feedLoaded = false;
+
+try {
+  const response = await fetch(mediumFeed, {
+    headers: { Accept: 'application/rss+xml, application/xml, text/xml' },
+    signal: AbortSignal.timeout(5000),
+  });
+
+  if (response.ok) {
+    const xml = await response.text();
+    const items = [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)];
+
+    articles = items
+      .map(([ , item ]) => {
+        const title = stripHtml(getTag(item, 'title'));
+        const href = cleanUrl(getTag(item, 'link'));
+        const content =
+          getTag(item, 'content:encoded') ||
+          getTag(item, 'description');
+        const dateValue = getTag(item, 'pubDate');
+        const parsedDate = dateValue ? new Date(dateValue) : null;
+
+        return {
+          title,
+          href,
+          date:
+            parsedDate && !Number.isNaN(parsedDate.getTime())
+              ? parsedDate.toISOString().slice(0, 10)
+              : '',
+          description: makeDescription(content),
+          image: getImage(item, content),
+          category: getCategory(title),
+        };
+      })
+      .filter((article) => article.title && article.href.startsWith('http'));
+
+    feedLoaded = articles.length > 0;
+  }
+} catch {
+  // If Medium's feed is unavailable during the build, show the known articles.
+}
+
+if (!feedLoaded) {
+  articles = fallbackArticles;
+}
+
+function formatDate(date) {
+  if (!date) return '';
+
+  const parsed = new Date(`${date}T12:00:00`);
+
+  if (Number.isNaN(parsed.getTime())) return '';
+
+  return new Intl.DateTimeFormat('en', {
+    month: 'long',
+    year: 'numeric',
+  }).format(parsed);
+}
 ---
-<BaseLayout title="Writings & ideas" description="Essays, articles, recommendations, and reflections on ideas and life." active="writings">
-  <section class="page-intro">
+
+<BaseLayout
+  title="Medium Articles"
+  description="My writing on physics, philosophy, stories, and questions about life."
+  active="writings"
+>
+  <section class="page-intro writings-intro">
     <div class="container">
-      <span class="eyebrow kicker">Writings & ideas / beyond the notebook</span>
-      <h1>Thoughts need<br /><span style="color: var(--coral)">somewhere to go.</span></h1>
-      <p class="intro-copy">Not everything worth keeping is a research result. This is the home for essays, Medium articles, recommendations, reflections, and ideas that are still finding their shape.</p>
-      <div class="intro-meta"><span>Articles</span><span>Reading notes</span><span>Reflections</span></div>
+      <span class="eyebrow kicker">Writing &amp; ideas</span>
+
+      <h1>
+        Thoughts, questions,<br />
+        <span class="heading-accent">and the occasional essay.</span>
+      </h1>
+
+      <p class="intro-copy">
+        Whenever I find the time, I try to put some of my thoughts into words.
+        Sometimes they concern physics; sometimes philosophy, stories, or the
+        more personal questions that are difficult to leave alone. This is
+        where I collect my articles published on Medium.
+      </p>
+
+      <div class="intro-meta">
+        <span>{articles.length} articles</span>
+        <span>Published on Medium</span>
+      </div>
     </div>
   </section>
-  <section class="section-tight" style="padding-top: 0">
+
+  <section class="section-tight articles-section">
     <div class="container">
-      <div class="notice"><span class="notice-mark">i</span><div>The sections below are an organizational framework, not a list of existing essays. As you add pieces, each can have its own title, short intro, date, tags, and link to Medium or another publication.</div></div>
-      <div class="writing-stack">
-        {writingSections.map((section) => (
-          <article class="writing-row" data-reveal>
-            <div class="writing-number">{section.number}</div>
-            <div><h2>{section.title}</h2><p class="subheading">{section.subtitle}</p></div>
-            <div><p>{section.body}</p><div class="inline-chip-list">{section.examples.map((example) => <span>{example}</span>)}</div></div>
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">From my Medium profile</span>
+          <h2>Medium articles</h2>
+        </div>
+
+        <a
+          class="profile-link"
+          href={mediumProfile}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Visit my profile <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="article-grid">
+        {articles.map((article, index) => (
+          <article class="article-card" data-reveal>
+            <a
+              class:list={['article-cover', !article.image && 'cover-placeholder']}
+              href={article.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Read ${article.title} on Medium`}
+            >
+              {article.image ? (
+                <img
+                  src={article.image}
+                  alt={`Cover image for ${article.title}`}
+                  loading={index < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              ) : (
+                <div class="placeholder-art" aria-hidden="true">
+                  <span class="placeholder-index">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span class="placeholder-title">{article.category}</span>
+                  <span class="placeholder-line"></span>
+                </div>
+              )}
+
+              <span class="cover-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <div class="article-content">
+              <div class="article-meta">
+                <span class="article-category">{article.category}</span>
+
+                {article.date && (
+                  <>
+                    <span class="meta-separator" aria-hidden="true">·</span>
+                    <time datetime={article.date}>
+                      {formatDate(article.date)}
+                    </time>
+                  </>
+                )}
+              </div>
+
+              <h3>
+                <a
+                  href={article.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {article.title}
+                </a>
+              </h3>
+
+              <p>{article.description}</p>
+
+              <a
+                class="article-link"
+                href={article.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read on Medium <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           </article>
         ))}
       </div>
-      <div class="writing-note" data-reveal>
-        <div><span class="eyebrow">An editorial rule</span><h3>Keep the context with the thought.</h3></div>
-        <p>For published writing, link to the original and note where it appeared. For personal reflections, date them when time changes their meaning. For recommendations, distinguish what you endorse from what you are simply exploring.</p>
+
+      <div class="writing-footer" data-reveal>
+        <p>
+          These are pieces written and published as I find the time. The
+          collection may grow, change direction, or wander into subjects
+          beyond the ones represented here.
+        </p>
+        <a
+          class="profile-link"
+          href={mediumProfile}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          More on Medium <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
   </section>
-  <section class="closing-banner"><div class="container closing-inner"><div><span class="eyebrow">Words, arguments, fragments</span><h2>A thought can be unfinished and still worth recording.</h2></div><a class="button" href="../research/">Back to research ↗</a></div></section>
+
+  <section class="writing-quote">
+    <div class="container quote-inner">
+      <span class="eyebrow">A closing thought</span>
+      <blockquote>
+        Writing is one way of staying with a question long enough to understand
+        what it is asking.
+      </blockquote>
+      <p>— A thought of my own</p>
+    </div>
+  </section>
+
+  <section class="closing-banner">
+    <div class="container closing-inner">
+      <div>
+        <span class="eyebrow">Elsewhere on this site</span>
+        <h2>Some questions lead back to the universe.</h2>
+      </div>
+
+      <a class="button" href="/research/">
+        Explore the research <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .writings-intro {
+    padding-bottom: 3.5rem;
+  }
+
+  .heading-accent {
+    color: var(--coral);
+  }
+
+  .articles-section {
+    padding-top: 0;
+    padding-bottom: 4.5rem;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line, rgba(127, 127, 127, 0.25));
+  }
+
+  .section-heading h2 {
+    margin: 0.4rem 0 0;
+  }
+
+  .profile-link,
+  .article-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--ink, inherit);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .profile-link {
+    white-space: nowrap;
+  }
+
+  .profile-link:hover,
+  .article-link:hover {
+    color: var(--coral);
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem 2rem;
+  }
+
+  .article-card {
+    min-width: 0;
+  }
+
+  .article-cover {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1.8 / 1;
+    border-radius: 4px;
+    background: var(--surface, #eeece7);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .article-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 300ms ease;
+  }
+
+  .article-cover:hover img {
+    transform: scale(1.035);
+  }
+
+  .cover-arrow {
+    position: absolute;
+    right: 0.85rem;
+    bottom: 0.85rem;
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--background, #fff);
+    color: var(--ink, #222);
+    font-size: 1rem;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .article-cover:hover .cover-arrow,
+  .article-cover:focus-visible .cover-arrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .placeholder-art {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 85% 15%, rgba(223, 113, 89, 0.25), transparent 48%),
+      linear-gradient(135deg, var(--surface, #eeece7), var(--background, #faf9f6));
+  }
+
+  .placeholder-index {
+    color: var(--coral);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .placeholder-title {
+    max-width: 85%;
+    color: var(--ink, #222);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .placeholder-line {
+    width: 3.5rem;
+    height: 2px;
+    background: var(--coral);
+  }
+
+  .article-content {
+    padding-top: 1.1rem;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted, #777);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .article-category {
+    color: var(--coral);
+    font-weight: 700;
+  }
+
+  .meta-separator {
+    opacity: 0.55;
+  }
+
+  .article-content h3 {
+    margin: 0.65rem 0 0.75rem;
+    font-size: clamp(1.3rem, 2vw, 1.75rem);
+    line-height: 1.28;
+    letter-spacing: -0.03em;
+  }
+
+  .article-content h3 a {
+    color: var(--ink, inherit);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .article-content h3 a:hover {
+    color: var(--coral);
+  }
+
+  .article-content > p {
+    margin: 0 0 1rem;
+    color: var(--muted, #777);
+    font-size: 0.96rem;
+    line-height: 1.8;
+  }
+
+  .article-link {
+    margin-top: 0.15rem;
+  }
+
+  .writing-footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line, rgba(127, 127, 127, 0.25));
+  }
+
+  .writing-footer p {
+    max-width: 620px;
+    margin: 0;
+    color: var(--muted, #777);
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+
+  .writing-quote {
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--line, rgba(127, 127, 127, 0.25));
+    border-bottom: 1px solid var(--line, rgba(127, 127, 127, 0.25));
+  }
+
+  .quote-inner {
+    max-width: 850px;
+  }
+
+  .quote-inner blockquote {
+    margin: 1.25rem 0 1rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.7rem, 4vw, 3rem);
+    line-height: 1.3;
+    letter-spacing: -0.035em;
+  }
+
+  .quote-inner > p {
+    margin: 0;
+    color: var(--muted, #777);
+    font-size: 0.9rem;
+  }
+
+  .closing-inner h2 {
+    max-width: 540px;
+  }
+
+  @media (max-width: 700px) {
+    .article-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2.5rem;
+    }
+
+    .article-cover {
+      aspect-ratio: 1.65 / 1;
+    }
+
+    .article-content h3 {
+      font-size: 1.5rem;
+    }
+
+    .writing-footer {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .writing-quote {
+      padding: 3.25rem 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .writings-intro {
+      padding-bottom: 2.5rem;
+    }
+
+    .section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .article-cover {
+      aspect-ratio: 1.45 / 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .article-cover img,
+    .cover-arrow,
+    .profile-link,
+    .article-link,
+    .article-content h3 a {
+      transition: none;
+    }
+  }
+</style>

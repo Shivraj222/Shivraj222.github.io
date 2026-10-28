@@ -1,30 +1,809 @@
+
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { artCategories } from '../../data/siteContent';
+
+const collections = [
+  {
+    id: 'art',
+    number: '01',
+    title: 'My Art',
+    subtitle: 'Things I make.',
+    description:
+      'Paintings, sketches, drawings, and visual experiments. A collection of things made by hand, explored through form, colour, and curiosity.',
+    folderId: '1cnQyN_nfIiT0LbQeUUU_NdLuzsC0YOpL',
+    accent: 'coral',
+    icon: '✳',
+  },
+  {
+    id: 'photography',
+    number: '02',
+    title: 'Photography',
+    subtitle: 'Things I notice.',
+    description:
+      'Photographs of people, places, light, and passing moments that I want to keep and share with the world.',
+    folderId: '1z2WQtbSArhmz9Cj3pkQvwTCYGCwogHt8',
+    accent: 'blue',
+    icon: '◉',
+  },
+];
+
+const WORKER_URL =
+  'https://plain-frost-f46d.shivrajdeshmukh218.workers.dev';
 ---
-<BaseLayout title="Art & photography" description="A home for photography, paintings, creative work, and visual experiments." active="art">
-  <section class="page-intro">
-    <div class="container">
-      <span class="eyebrow kicker">Art & photography / the studio</span>
-      <h1>A place for what<br /><span style="color: var(--coral)">doesn’t need equations.</span></h1>
-      <p class="intro-copy">Photographs, paintings, sketches, and small visual experiments. This area gives creative work its own room without making it compete with the research archive.</p>
-      <div class="intro-meta"><span>Photography</span><span>Painting</span><span>Visual experiments</span><span>Work in progress</span></div>
-    </div>
-  </section>
-  <section class="section-tight" style="padding-top: 0">
-    <div class="container">
-      <div class="notice"><span class="notice-mark">i</span><div>The artwork-shaped panels below are temporary visual placeholders, not your photographs or paintings. Replace them with your own images and captions when you are ready. The layout is designed to support small collections and larger series.</div></div>
-      <div class="art-grid">
-        {artCategories.map((category) => (
-          <article class="art-card" data-reveal>
-            <div class:list={['art-visual', category.className]} aria-label={`${category.title} image placeholder`} role="img">
-              <span class="art-visual-label">Visual placeholder / {category.number}</span>
+
+<BaseLayout
+  title="Art & Photography"
+  description="A collection of my artwork and photography."
+>
+  <main class="art-page">
+    <section class="intro">
+      <p class="eyebrow">BEYOND THE RESEARCH</p>
+      <h1>Art & <span>Photography.</span></h1>
+      <p class="intro-copy">
+        Another way of paying attention. Things I make, things I notice,
+        and moments I want to keep.
+      </p>
+      <div class="intro-mark" aria-hidden="true">✳</div>
+    </section>
+
+    <nav class="collection-nav" aria-label="Art collections">
+      {collections.map((collection) => (
+        <a
+          href={`#${collection.id}`}
+          class={`nav-item ${collection.accent}`}
+        >
+          <span class="nav-number">{collection.number}</span>
+          <span>{collection.title}</span>
+          <span class="nav-arrow" aria-hidden="true">↘</span>
+        </a>
+      ))}
+    </nav>
+
+    {collections.map((collection) => (
+      <section
+        id={collection.id}
+        class={`collection-section ${collection.accent}`}
+      >
+        <div class="section-heading">
+          <div class="section-title-wrap">
+            <span class="section-icon" aria-hidden="true">
+              {collection.icon}
+            </span>
+            <div>
+              <p class="eyebrow">{collection.subtitle}</p>
+              <h2>{collection.title}<span class="title-period">.</span></h2>
             </div>
-            <div class="art-caption"><span class="eyebrow kicker">Collection {category.number}</span><h2>{category.title}</h2><p>{category.description}</p></div>
-          </article>
-        ))}
-      </div>
-      <div class="art-note">A good default for each piece: title, date (optional), medium or location (optional), and one sentence of context. Let the work lead; keep the metadata light.</div>
-    </div>
-  </section>
+          </div>
+          <p class="section-description">{collection.description}</p>
+        </div>
+
+        <div
+          class="gallery"
+          id={`gallery-${collection.id}`}
+          data-folder-id={collection.folderId}
+          data-collection={collection.id}
+          aria-live="polite"
+        >
+          <div class="gallery-status">Loading collection…</div>
+        </div>
+
+        <div class="section-footer">
+          <span class="image-count" id={`count-${collection.id}`}>
+            Loading images…
+          </span>
+          <a
+            class="drive-link"
+            href={`https://drive.google.com/drive/folders/${collection.folderId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open collection in Drive ↗
+          </a>
+        </div>
+      </section>
+    ))}
+
+    <section class="closing-note">
+      <span aria-hidden="true">✳</span>
+      <p>An ongoing archive. New work finds its way here as it happens.</p>
+    </section>
+  </main>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close image">×</button>
+    <button class="lightbox-arrow lightbox-prev" id="lightbox-prev" aria-label="Previous image">‹</button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-image" src="" alt="" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+    <button class="lightbox-arrow lightbox-next" id="lightbox-next" aria-label="Next image">›</button>
+  </dialog>
 </BaseLayout>
+
+<script>
+  type DriveFile = {
+    id: string;
+    name: string;
+    mimeType: string;
+    webViewLink?: string;
+    resourceKey?: string;
+  };
+
+  type GalleryImage = DriveFile & {
+    imageUrl: string;
+  };
+
+  type FolderResponse = {
+    folderId: string;
+    count: number;
+    files: DriveFile[];
+  };
+
+  const WORKER_URL =
+    'https://plain-frost-f46d.shivrajdeshmukh218.workers.dev';
+
+  const galleries = Array.from(
+    document.querySelectorAll<HTMLElement>('.gallery'),
+  );
+
+  const lightbox =
+    document.querySelector<HTMLDialogElement>('#lightbox');
+
+  const viewerImage =
+    document.querySelector<HTMLImageElement>('#lightbox-image');
+
+  const viewerCaption =
+    document.querySelector<HTMLElement>('#lightbox-caption');
+
+  let activeImages: GalleryImage[] = [];
+  let activeIndex = 0;
+
+  function setStatus(
+    gallery: HTMLElement,
+    message: string,
+    isError = false,
+  ) {
+    gallery.replaceChildren();
+
+    const status = document.createElement('div');
+    status.className =
+      `gallery-status${isError ? ' gallery-error' : ''}`;
+    status.textContent = message;
+
+    gallery.appendChild(status);
+  }
+
+  function imageProxyUrl(file: DriveFile): string {
+    const url = new URL(WORKER_URL);
+
+    url.searchParams.set('action', 'image');
+    url.searchParams.set('id', file.id);
+
+    if (file.resourceKey) {
+      url.searchParams.set('resourceKey', file.resourceKey);
+    }
+
+    return url.toString();
+  }
+
+  async function listFolderImages(
+    folderId: string,
+  ): Promise<DriveFile[]> {
+    const url = new URL(WORKER_URL);
+
+    url.searchParams.set('action', 'list');
+    url.searchParams.set('folderId', folderId);
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      const message = await response.text();
+      throw new Error(message || `Worker error (${response.status})`);
+    }
+
+    const data = (await response.json()) as FolderResponse;
+
+    if (!Array.isArray(data.files)) {
+      throw new Error('The Worker returned an unexpected folder response.');
+    }
+
+    return data.files;
+  }
+
+  function createCard(
+    image: GalleryImage,
+    images: GalleryImage[],
+    index: number,
+  ): HTMLElement {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'gallery-card';
+    card.setAttribute('aria-label', `View ${image.name}`);
+
+    const media = document.createElement('div');
+    media.className = 'gallery-media';
+
+    const img = document.createElement('img');
+    img.src = image.imageUrl;
+    img.alt = image.name;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+
+    img.addEventListener('error', () => {
+      media.classList.add('media-unavailable');
+      img.remove();
+
+      const message = document.createElement('span');
+      message.className = 'unavailable-message';
+      message.textContent = 'Image could not be loaded';
+
+      const link = document.createElement('a');
+      link.href =
+        image.webViewLink ||
+        `https://drive.google.com/file/d/${encodeURIComponent(image.id)}/view`;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.className = 'open-drive-fallback';
+      link.textContent = 'Open in Google Drive ↗';
+
+      // Keep the fallback link usable without opening the lightbox.
+      link.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+
+      media.append(message, link);
+    });
+
+    const overlay = document.createElement('span');
+    overlay.className = 'gallery-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.textContent = '↗';
+
+    const caption = document.createElement('span');
+    caption.className = 'gallery-caption';
+    caption.textContent = image.name.replace(/\.[^/.]+$/, '');
+
+    media.append(img, overlay);
+    card.append(media, caption);
+
+    card.addEventListener('click', () => {
+      openLightbox(images, index);
+    });
+
+    return card;
+  }
+
+  function renderGallery(
+    gallery: HTMLElement,
+    files: DriveFile[],
+  ) {
+    const images: GalleryImage[] = files.map((file) => ({
+      ...file,
+      imageUrl: imageProxyUrl(file),
+    }));
+
+    gallery.replaceChildren();
+
+    if (!images.length) {
+      setStatus(gallery, 'No images in this collection yet.');
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    images.forEach((image, index) => {
+      fragment.appendChild(createCard(image, images, index));
+    });
+
+    gallery.appendChild(fragment);
+  }
+
+  async function loadGallery(gallery: HTMLElement) {
+    const folderId = gallery.dataset.folderId;
+    const collection = gallery.dataset.collection || '';
+    const count = document.querySelector<HTMLElement>(
+      `#count-${collection}`,
+    );
+
+    if (!folderId) {
+      setStatus(gallery, 'This collection has no folder configured.', true);
+      return;
+    }
+
+    try {
+      const previousCount = count?.textContent || '';
+      setStatus(gallery, 'Loading images…');
+
+      const files = await listFolderImages(folderId);
+
+      renderGallery(gallery, files);
+
+      if (count) {
+        count.textContent =
+          `${files.length} ${files.length === 1 ? 'image' : 'images'}`;
+      }
+    } catch (error) {
+      console.error(`Unable to load ${collection}:`, error);
+
+      const message =
+        error instanceof Error ? error.message : 'Unknown error';
+
+      setStatus(
+        gallery,
+        `Could not load this collection. ${message}`,
+        true,
+      );
+
+      if (count && !count.textContent) {
+        count.textContent = 'Unable to load images';
+      }
+    }
+  }
+
+  function showViewerImage() {
+    if (!viewerImage || !viewerCaption || !activeImages.length) return;
+
+    const image = activeImages[activeIndex];
+    viewerImage.src = image.imageUrl;
+    viewerImage.alt = image.name;
+    viewerCaption.textContent = image.name.replace(/\.[^/.]+$/, '');
+  }
+
+  function openLightbox(images: GalleryImage[], index: number) {
+    if (!lightbox) return;
+
+    activeImages = images;
+    activeIndex = index;
+    showViewerImage();
+
+    if (!lightbox.open) {
+      lightbox.showModal();
+    }
+  }
+
+  function showPrevious() {
+    if (!activeImages.length) return;
+
+    activeIndex =
+      (activeIndex - 1 + activeImages.length) % activeImages.length;
+
+    showViewerImage();
+  }
+
+  function showNext() {
+    if (!activeImages.length) return;
+
+    activeIndex = (activeIndex + 1) % activeImages.length;
+    showViewerImage();
+  }
+
+  document
+    .querySelector('#lightbox-close')
+    ?.addEventListener('click', () => lightbox?.close());
+
+  document
+    .querySelector('#lightbox-prev')
+    ?.addEventListener('click', showPrevious);
+
+  document
+    .querySelector('#lightbox-next')
+    ?.addEventListener('click', showNext);
+
+  lightbox?.addEventListener('click', (event) => {
+    if (event.target === lightbox) {
+      lightbox.close();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (!lightbox?.open) return;
+
+    if (event.key === 'ArrowLeft') showPrevious();
+    if (event.key === 'ArrowRight') showNext();
+  });
+
+  // Initial load.
+  galleries.forEach((gallery) => {
+    void loadGallery(gallery);
+  });
+
+  // Recheck Drive every minute while this page remains open.
+  // This allows changes to the folders to appear without a page reload.
+  window.setInterval(() => {
+    galleries.forEach((gallery) => {
+      void loadGallery(gallery);
+    });
+  }, 60_000);
+</script>
+
+<style>
+  .art-page {
+    --ink: var(--color-text, #242321);
+    --muted: var(--color-muted, #77736e);
+    --line: var(--color-border, #e5e0d8);
+    --coral: #d96e56;
+    --blue: #6689b8;
+    width: min(100% - 2.5rem, 1120px);
+    margin: 0 auto;
+    padding: 4.5rem 0 5rem;
+    color: var(--ink);
+  }
+
+  .intro {
+    position: relative;
+    padding: 2rem 0 4rem;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .eyebrow {
+    margin: 0 0 .85rem;
+    color: var(--muted);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+
+  .intro h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0;
+    font-size: clamp(3.2rem, 8vw, 6.8rem);
+    font-weight: 650;
+    letter-spacing: -.075em;
+    line-height: .98;
+  }
+
+  .intro h1 span { color: var(--coral); }
+
+  .intro-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 1.6rem 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.8;
+  }
+
+  .intro-mark {
+    position: absolute;
+    right: 1rem;
+    bottom: -4.8rem;
+    color: #f0e5d8;
+    font-size: clamp(10rem, 24vw, 20rem);
+    line-height: 1;
+    transform: rotate(-15deg);
+    pointer-events: none;
+  }
+
+  .collection-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 1.5rem 0 4.5rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    min-width: 0;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+
+  .nav-item:hover {
+    transform: translateY(-3px);
+    border-color: currentColor;
+  }
+
+  .nav-number { color: var(--muted); font-size: .72rem; }
+  .nav-item > span:nth-child(2) { font-size: .95rem; font-weight: 650; }
+  .nav-arrow { margin-left: auto; font-size: 1.2rem; }
+  .nav-item.coral .nav-arrow { color: var(--coral); }
+  .nav-item.blue .nav-arrow { color: var(--blue); }
+
+  .collection-section {
+    padding: 0 0 4.5rem;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 2rem;
+  }
+
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, .7fr);
+    align-items: end;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-icon {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 1.6rem;
+  }
+
+  .coral .section-icon { color: var(--coral); background: #f8e9e3; }
+  .blue .section-icon { color: var(--blue); background: #e8eef7; }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-weight: 650;
+    letter-spacing: -.06em;
+    line-height: 1.05;
+  }
+
+  .coral .title-period { color: var(--coral); }
+  .blue .title-period { color: var(--blue); }
+
+  .section-description {
+    max-width: 440px;
+    margin: 0;
+    color: var(--muted);
+    font-size: .92rem;
+    line-height: 1.8;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 1.2rem;
+    min-height: 100px;
+  }
+
+  .gallery-status {
+    grid-column: 1 / -1;
+    padding: 2rem 0;
+    color: var(--muted);
+    font-size: .9rem;
+    overflow-wrap: anywhere;
+  }
+
+  .gallery-error { color: #a44837; }
+
+  .gallery-card {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: zoom-in;
+  }
+
+  .gallery-media {
+    position: relative;
+    display: grid;
+    min-height: 170px;
+    aspect-ratio: 4 / 5;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #efede8;
+  }
+
+  .gallery-card:nth-child(3n + 2) .gallery-media { aspect-ratio: 4 / 4.6; }
+  .gallery-card:nth-child(3n) .gallery-media { aspect-ratio: 4 / 5.2; }
+
+  .gallery-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 350ms ease;
+  }
+
+  .gallery-card:hover .gallery-media img { transform: scale(1.035); }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(20, 20, 20, .22);
+    color: white;
+    font-size: 2rem;
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+  }
+
+  .gallery-card:hover .gallery-overlay,
+  .gallery-card:focus-visible .gallery-overlay { opacity: 1; }
+
+  .gallery-caption {
+    display: block;
+    padding: .75rem .15rem 0;
+    color: var(--muted);
+    font-size: .78rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .media-unavailable {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    padding: 1rem;
+    background: #f0ede7;
+    text-align: center;
+  }
+
+  .unavailable-message { color: #77736e; font-size: .82rem; }
+  .open-drive-fallback { color: #4c6c9b; font-size: .8rem; }
+
+  .section-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: .78rem;
+  }
+
+  .drive-link {
+    color: var(--ink);
+    text-decoration-color: var(--line);
+    text-underline-offset: 4px;
+  }
+
+  .closing-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .8rem;
+    padding-bottom: 1rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .closing-note span { color: var(--coral); font-size: 1.5rem; }
+  .closing-note p { margin: 0; font-size: .9rem; line-height: 1.7; }
+
+  .lightbox {
+    position: fixed;
+    width: min(94vw, 1200px);
+    max-width: none;
+    max-height: 92dvh;
+    padding: 3.5rem 4rem 2rem;
+    overflow: auto;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    background: #171715;
+    color: #f7f5f0;
+  }
+
+  .lightbox::backdrop {
+    background: rgba(15,15,14,.88);
+    backdrop-filter: blur(8px);
+  }
+
+  .lightbox-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .lightbox-figure img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 74dvh;
+    object-fit: contain;
+  }
+
+  .lightbox-figure figcaption {
+    color: #c5c1b9;
+    font-size: .82rem;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .lightbox-close,
+  .lightbox-arrow {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.1);
+    color: white;
+    cursor: pointer;
+  }
+
+  .lightbox-close {
+    top: .8rem;
+    right: .8rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.8rem;
+  }
+
+  .lightbox-arrow {
+    top: 50%;
+    width: 2.7rem;
+    height: 2.7rem;
+    font-size: 2rem;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-prev { left: .6rem; }
+  .lightbox-next { right: .6rem; }
+
+  @media (min-width: 900px) {
+    .gallery {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .art-page {
+      width: min(100% - 1.5rem, 1120px);
+      padding-top: 2rem;
+    }
+
+    .intro { padding: 1.5rem 0 3rem; }
+    .intro-mark { right: -2rem; bottom: -2rem; font-size: 10rem; }
+    .collection-nav { gap: .6rem; padding-bottom: 3rem; }
+    .nav-item { gap: .5rem; padding: .9rem .65rem; }
+    .nav-item > span:nth-child(2) { font-size: .8rem; }
+    .section-heading { grid-template-columns: 1fr; gap: 1rem; }
+    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+    .gallery-media { min-height: 130px; }
+    .section-footer { align-items: flex-start; }
+
+    .lightbox {
+      width: 100%;
+      max-width: 100%;
+      max-height: 100dvh;
+      padding: 3.5rem 2.5rem 2rem;
+      border-radius: 0;
+    }
+
+    .lightbox-figure img { max-height: 78dvh; }
+    .lightbox-prev { left: .25rem; }
+    .lightbox-next { right: .25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .art-page *,
+    .art-page *::before,
+    .art-page *::after {
+      animation-duration: .01ms !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>

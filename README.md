@@ -1,4 +1,4 @@
-# Fieldnotes — personal research & creative website
+# Shivraj Deshmukh — personal research & creative website
 
 A first working version of a research-first personal website built with Astro. It is a static website: it needs no database, server, paid theme, or runtime account. PDFs are linked externally; this project does not embed PDF viewers or require you to store every document in the repository.
 
@@ -120,3 +120,8 @@ Everything pushed to a public repository and deployed here is public — includi
 
 - [Astro getting started](https://docs.astro.build/en/getting-started/)
 - [Astro deployment to GitHub Pages](https://docs.astro.build/en/guides/deploy/github/)
+
+
+## Homepage portrait and physics illustrations
+
+The homepage portrait is stored at `public/images/shivraj-portrait.jpg`. Replace that file if you want to use a different portrait, keeping the same filename or updating the image path in `src/pages/index.astro`. The black hole, curved spacetime, and equation illustrations are lightweight CSS and SVG artwork built into the homepage, so they do not need separate image files. The Pale Blue Dot image is served from NASA's official image asset and is credited on the homepage.

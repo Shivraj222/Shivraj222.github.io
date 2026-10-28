@@ -2,75 +2,530 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { researchEntries } from '../data/siteContent';
 import ResearchCard from '../components/ResearchCard.astro';
+
 const base = import.meta.env.BASE_URL;
 const featuredEntries = researchEntries.slice(0, 3);
 ---
-<BaseLayout title="A living map of ideas" description="A research-first personal website for quantum gravity, theoretical physics, writing, media, and art.">
+
+<BaseLayout
+  title="Shivraj Deshmukh | Physics, Research, and Other Interests"
+  description="My work and interests in theoretical physics, quantum gravity, AdS/CFT, philosophy, writing, and art."
+>
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <span class="eyebrow kicker">A personal research archive & creative notebook</span>
-        <h1>Following the thread from <em>gravity</em> to everything underneath.</h1>
-        <p class="hero-copy">A home for questions in <strong>quantum gravity, AdS/CFT, and theoretical physics</strong> — alongside the notes, writing, images, and experiments that make up the rest of a life.</p>
+        <span class="eyebrow kicker">Research, notes, and other interests</span>
+
+        <h1>Trying to understand gravity, and the universe it belongs to.</h1>
+
+        <p class="hero-copy">
+          I work on questions in
+          <strong>quantum gravity, AdS/CFT, and theoretical physics</strong>.
+          This site brings together my research, notes, writing, and interests beyond physics.
+        </p>
+
         <div class="button-row">
-          <a class="button" href={`${base}research/`}>Explore the research archive <span aria-hidden="true">↗</span></a>
-          <a class="button secondary" href={`${base}about/`}>A little about me</a>
+          <a class="button" href={`${base}research/`}>
+            Explore the research archive <span aria-hidden="true">↗</span>
+          </a>
+          <a class="button secondary" href={`${base}about/`}>About me</a>
         </div>
-        <div class="hero-note">Research first. Everything else has a place, too.</div>
+
+        <div class="hero-note">Research comes first. There is more here, too.</div>
+
+        <div class="personal-intro">
+          <span class="eyebrow">A little about me</span>
+          <p>
+            I come from a farming family, and I want to do something worthwhile with the time
+            I have. I want to understand as much of the universe as I can through physics and
+            philosophy, while continuing to test myself through training and learning.
+            I do not expect to have all the answers. I would like, in my own small way,
+            to help us understand the universe a little better.
+          </p>
+        </div>
       </div>
-      <div class="hero-art" aria-label="Abstract orbital illustration" role="img">
-        <div class="orbit-panel">
-          <span class="hero-sticker">notes<br />on the<br />fundamental</span>
-          <svg class="orbit-shape" viewBox="0 0 420 420" aria-hidden="true">
-            <defs>
-              <linearGradient id="orbitalFill" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f7f5ed"/><stop offset="1" stop-color="#d8e2d4"/></linearGradient>
-            </defs>
-            <circle cx="210" cy="210" r="142" fill="url(#orbitalFill)" opacity=".9" />
-            <circle cx="210" cy="210" r="116" fill="none" stroke="#263f3b" stroke-width="1" stroke-dasharray="3 7" opacity=".6" />
-            <ellipse cx="210" cy="210" rx="166" ry="57" fill="none" stroke="#263f3b" stroke-width="2" transform="rotate(-37 210 210)" />
-            <ellipse cx="210" cy="210" rx="166" ry="57" fill="none" stroke="#263f3b" stroke-width="2" transform="rotate(38 210 210)" />
-            <ellipse cx="210" cy="210" rx="152" ry="95" fill="none" stroke="#d77e67" stroke-width="3" transform="rotate(90 210 210)" />
-            <path d="M78 250 C112 170, 155 132, 211 137 S317 180, 342 113" stroke="#4a7760" stroke-width="3" fill="none" stroke-linecap="round" />
-            <circle cx="210" cy="210" r="30" fill="#e6bd59" />
-            <circle cx="210" cy="210" r="8" fill="#263f3b" />
-            <circle cx="327" cy="151" r="7" fill="#d77e67" />
-            <circle cx="127" cy="111" r="7" fill="#4a7760" />
-            <circle cx="108" cy="288" r="5" fill="#263f3b" />
-            <path d="M188 210 h44 M210 188 v44" stroke="#263f3b" stroke-width="1" opacity=".4" />
-          </svg>
-          <div class="orbit-caption"><span>Open notebook / 001</span><strong>Keep asking<br />better questions.</strong></div>
+
+      <div class="hero-art portrait-art">
+        <div class="orbit-panel portrait-panel">
+          <span class="hero-sticker">Physics<br />philosophy<br />life</span>
+
+          <img
+            class="portrait-image"
+            src={`${base}images/shivraj-portrait.jpg`}
+            alt="Portrait of Shivraj Deshmukh"
+            loading="eager"
+            fetchpriority="high"
+          />
+
+          <div class="orbit-caption">
+            <span>Researcher / In progress</span>
+            <strong>Still learning.<br />Still asking.</strong>
+          </div>
         </div>
       </div>
     </div>
-    <div class="container hero-bottomline"><span>Quantum gravity / AdS-CFT / High-energy theory</span><span>Calculations · questions · creative life</span></div>
+
+    <div class="container hero-bottomline">
+      <span>Quantum gravity / AdS-CFT / High-energy theory</span>
+      <span>Research · learning · life beyond physics</span>
+    </div>
+  </section>
+
+  <section class="pale-blue-section">
+    <div class="container pale-blue-grid">
+      <div class="pale-blue-copy" data-reveal>
+        <span class="eyebrow">Our place in the universe</span>
+
+        <h2>We are a way for the cosmos to know itself.</h2>
+
+        <p>
+          Carl Sagan's words express an idea I find worth returning to: we are part of the
+          universe we study. The atoms that make up our bodies formed through cosmic history,
+          and we have developed the ability to investigate that history and ask questions
+          about our own existence. For me, that is one reason learning about nature matters.
+        </p>
+
+        <span class="image-credit">Image credit: NASA / JPL-Caltech</span>
+      </div>
+
+      <figure class="pale-blue-figure" data-reveal>
+        <img
+          src="https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia23/pia23645/PIA23645.jpg"
+          alt="Earth appearing as a tiny pale blue point in a beam of sunlight, photographed by Voyager 1"
+          loading="lazy"
+        />
+
+        <figcaption>
+          Earth, photographed by Voyager 1 from the outer Solar System on February 14, 1990.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- THEORETICAL PHYSICS VISUAL GALLERY -->
+  <section class="physics-visuals">
+    <div class="container">
+      <div class="physics-heading" data-reveal>
+        <span class="eyebrow">Ideas in theoretical physics</span>
+        <h2>Black holes, holography, and the structure of spacetime.</h2>
+        <p>
+          I am interested in how gravity, quantum theory, geometry, and information fit
+          together. The topics here approach that question in different ways, from the
+          physics of black holes to the relationship between gravitational theories and
+          quantum field theories.
+        </p>
+      </div>
+
+      <div class="physics-grid">
+        <!-- BLACK HOLES -->
+        <article class="physics-card" data-reveal>
+          <div class="physics-art black-hole-art">
+            <img
+              class="physics-photo"
+              src="https://svs.gsfc.nasa.gov/vis/a010000/a013300/a013326/BH_Accretion_Disk_Sim_360_4k_Prores.00001_print.jpg"
+              alt="NASA visualization of a black hole surrounded by a glowing accretion disk"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="physics-index">01 / GRAVITATION</span>
+          <h3>Black holes</h3>
+          <p>
+            Black holes bring together strong gravity, spacetime geometry, and questions
+            about what happens to information in quantum theory. Understanding them is
+            an important part of the search for a quantum description of gravity.
+          </p>
+          <a
+            class="physics-link"
+            href="https://svs.gsfc.nasa.gov/13326"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Explore the NASA visualization ↗
+          </a>
+        </article>
+
+        <!-- HOLOGRAPHIC PRINCIPLE -->
+        <article class="physics-card" data-reveal>
+          <div class="physics-art holography-art">
+            <svg
+              viewBox="0 0 320 210"
+              role="img"
+              aria-label="Conceptual illustration of information in a volume represented on its boundary"
+            >
+              <defs>
+                <linearGradient id="holoVolume" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#d4e8df" stop-opacity="0.23" />
+                  <stop offset="100%" stop-color="#88aebc" stop-opacity="0.04" />
+                </linearGradient>
+              </defs>
+
+              <path
+                d="M76 58 L181 31 L254 72 L148 103 Z"
+                fill="url(#holoVolume)"
+                stroke="#8cb7b1"
+                stroke-width="1.5"
+              />
+              <path
+                d="M76 58 L76 148 L148 184 L148 103 Z"
+                fill="#9ac9bd"
+                fill-opacity="0.1"
+                stroke="#8cb7b1"
+                stroke-width="1.5"
+              />
+              <path
+                d="M148 103 L254 72 L254 160 L148 184 Z"
+                fill="#83a9c2"
+                fill-opacity="0.13"
+                stroke="#8cb7b1"
+                stroke-width="1.5"
+              />
+
+              <g stroke="#8cb7b1" stroke-width="1" opacity="0.65">
+                <path d="M111 49 L183 89 L183 173" fill="none" />
+                <path d="M147 40 L219 81 L219 168" fill="none" />
+                <path d="M76 88 L148 126 L254 99" fill="none" />
+                <path d="M76 118 L148 155 L254 129" fill="none" />
+              </g>
+
+              <g fill="#e6bd59">
+                <circle cx="76" cy="58" r="3" />
+                <circle cx="181" cy="31" r="3" />
+                <circle cx="254" cy="72" r="3" />
+                <circle cx="148" cy="103" r="3" />
+                <circle cx="76" cy="148" r="3" />
+                <circle cx="148" cy="184" r="3" />
+                <circle cx="254" cy="160" r="3" />
+              </g>
+
+              <path
+                d="M95 197 L225 197"
+                stroke="#e6bd59"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <text
+                x="160"
+                y="206"
+                fill="currentColor"
+                font-size="9"
+                text-anchor="middle"
+              >BOUNDARY / INFORMATION</text>
+            </svg>
+          </div>
+
+          <span class="physics-index">02 / QUANTUM GRAVITY</span>
+          <h3>The holographic principle</h3>
+          <p>
+            The holographic principle suggests that the information needed to describe
+            a region of space may be encoded in degrees of freedom associated with
+            its boundary. It changes how we think about space, gravity, and information.
+          </p>
+        </article>
+
+        <!-- ADS/CFT CORRESPONDENCE -->
+        <article class="physics-card" data-reveal>
+          <div class="physics-art ads-cft-art">
+            <svg
+              viewBox="0 0 320 210"
+              role="img"
+              aria-label="Conceptual diagram connecting a gravitational theory in a bulk space with a conformal field theory on its boundary"
+            >
+              <defs>
+                <linearGradient id="adsBulk" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#9abdd5" stop-opacity="0.25" />
+                  <stop offset="100%" stop-color="#9abdd5" stop-opacity="0.03" />
+                </linearGradient>
+              </defs>
+
+              <path
+                d="M37 165 Q160 17 283 165"
+                fill="url(#adsBulk)"
+                stroke="#9abdd5"
+                stroke-width="2"
+              />
+              <path
+                d="M56 165 Q160 45 264 165"
+                fill="none"
+                stroke="#9abdd5"
+                stroke-width="1"
+                stroke-dasharray="3 5"
+              />
+              <path
+                d="M78 165 Q160 72 242 165"
+                fill="none"
+                stroke="#9abdd5"
+                stroke-width="1"
+                stroke-dasharray="3 5"
+              />
+
+              <g stroke="#9abdd5" stroke-width="1" opacity="0.65">
+                <path d="M160 40 L160 164" />
+                <path d="M119 67 L119 164" />
+                <path d="M201 67 L201 164" />
+                <path d="M87 105 L87 164" />
+                <path d="M233 105 L233 164" />
+              </g>
+
+              <path
+                d="M37 165 Q160 196 283 165"
+                fill="none"
+                stroke="#e6bd59"
+                stroke-width="3"
+              />
+
+              <g fill="#e6bd59">
+                <circle cx="55" cy="169" r="3" />
+                <circle cx="83" cy="177" r="3" />
+                <circle cx="112" cy="183" r="3" />
+                <circle cx="142" cy="186" r="3" />
+                <circle cx="172" cy="186" r="3" />
+                <circle cx="202" cy="183" r="3" />
+                <circle cx="232" cy="177" r="3" />
+                <circle cx="265" cy="169" r="3" />
+              </g>
+
+              <text
+                x="160"
+                y="19"
+                fill="currentColor"
+                font-size="11"
+                text-anchor="middle"
+                font-weight="600"
+              >BULK / GRAVITY</text>
+
+              <text
+                x="160"
+                y="205"
+                fill="currentColor"
+                font-size="10"
+                text-anchor="middle"
+                font-weight="600"
+              >BOUNDARY / CFT</text>
+            </svg>
+          </div>
+
+          <span class="physics-index">03 / GAUGE-GRAVITY DUALITY</span>
+          <h3>AdS/CFT correspondence</h3>
+          <p>
+            AdS/CFT relates a gravitational theory in an anti-de Sitter bulk to a
+            conformal field theory on its boundary. It provides a framework for studying
+            gravity through quantum field theory, and vice versa.
+          </p>
+        </article>
+
+        <!-- QUANTUM ENTANGLEMENT -->
+        <article class="physics-card" data-reveal>
+          <div class="physics-art entanglement-art">
+            <svg
+              viewBox="0 0 320 210"
+              role="img"
+              aria-label="Conceptual illustration of two quantum systems connected by entanglement correlations"
+            >
+              <defs>
+                <radialGradient id="entangleGlow">
+                  <stop offset="0%" stop-color="#e6bd59" stop-opacity="0.24" />
+                  <stop offset="100%" stop-color="#e6bd59" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+
+              <circle cx="75" cy="101" r="48" fill="url(#entangleGlow)" />
+              <circle cx="245" cy="101" r="48" fill="url(#entangleGlow)" />
+
+              <path
+                d="M75 101 C112 31 208 31 245 101 C208 171 112 171 75 101 Z"
+                fill="none"
+                stroke="#9abdd5"
+                stroke-width="1.5"
+                stroke-dasharray="4 5"
+              />
+
+              <path
+                d="M75 101 C115 78 205 124 245 101"
+                fill="none"
+                stroke="#e6bd59"
+                stroke-width="2"
+              />
+
+              <path
+                d="M75 101 C115 124 205 78 245 101"
+                fill="none"
+                stroke="#e6bd59"
+                stroke-width="2"
+                opacity="0.75"
+              />
+
+              <circle cx="75" cy="101" r="27" fill="#263f3b" stroke="#9ac9bd" stroke-width="2" />
+              <circle cx="245" cy="101" r="27" fill="#263f3b" stroke="#9ac9bd" stroke-width="2" />
+
+              <g stroke="#f5f3ed" stroke-width="2" stroke-linecap="round">
+                <path d="M75 114 L75 88 M65 98 L75 88 L85 98" fill="none" />
+                <path d="M245 114 L245 88 M235 98 L245 88 L255 98" fill="none" />
+              </g>
+
+              <text
+                x="75"
+                y="151"
+                fill="currentColor"
+                font-size="10"
+                text-anchor="middle"
+              >SYSTEM A</text>
+
+              <text
+                x="245"
+                y="151"
+                fill="currentColor"
+                font-size="10"
+                text-anchor="middle"
+              >SYSTEM B</text>
+
+              <text
+                x="160"
+                y="196"
+                fill="currentColor"
+                font-size="10"
+                text-anchor="middle"
+              >QUANTUM CORRELATIONS</text>
+            </svg>
+          </div>
+
+          <span class="physics-index">04 / QUANTUM INFORMATION</span>
+          <h3>Quantum entanglement</h3>
+          <p>
+            Entangled quantum systems can have correlations that cannot be explained
+            by assigning each system its own independent set of local properties.
+            Entanglement also plays an important role in current research on quantum
+            information and the relationship between geometry and gravity.
+          </p>
+        </article>
+
+        <!-- WORMHOLES -->
+        <article class="physics-card" data-reveal>
+          <div class="physics-art wormhole-art">
+            <img
+              class="physics-photo"
+              src="https://supernova.eso.org/static/archives/exhibitionimages/large/1209b-wormhole_cc.jpg"
+              alt="Artist's concept from ESO showing a hypothetical wormhole connecting distant regions of space"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="physics-index">05 / SPACETIME</span>
+          <h3>Wormholes</h3>
+          <p>
+            Wormholes are hypothetical spacetime geometries that could connect distant
+            regions. They raise questions about the structure of spacetime and, in some
+            theoretical settings, have interesting connections to quantum entanglement.
+          </p>
+          <a
+            class="physics-link"
+            href="https://supernova.eso.org/exhibition/images/1209b-wormhole_cc/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View the ESO illustration ↗
+          </a>
+        </article>
+      </div>
+
+      <p class="physics-disclaimer">
+        These illustrations are schematic, not experimental images. The topics shown
+        have different scientific status: black holes are supported by extensive
+        observational evidence, while wormholes remain hypothetical. The holographic
+        principle and AdS/CFT are theoretical frameworks studied in specific settings.
+      </p>
+    </div>
   </section>
 
   <section class="section tinted-section">
     <div class="container">
       <div class="section-heading" data-reveal>
-        <div><span class="eyebrow kicker">The map</span><h2>One person. Several kinds of curiosity.</h2></div>
-        <p>Research is the spine of this site. The other sections give the rest of the work — and the person doing it — room to breathe.</p>
+        <div>
+          <span class="eyebrow kicker">Around this site</span>
+          <h2>Research, writing, and life beyond the equations.</h2>
+        </div>
+
+        <p>
+          Most of this site is devoted to research. The other sections collect things
+          I write, make, read, and spend time thinking about outside my academic work.
+        </p>
       </div>
+
       <div class="area-grid">
         <a class="area-card" href={`${base}research/`} data-reveal>
-          <div class="area-card-top"><span class="area-icon">∿</span><span class="area-index">01 / CORE</span></div>
-          <div><h3>Research & academia</h3><p>Projects, papers, technical derivations, reading maps, and presentations — linked together rather than scattered.</p></div>
-          <div class="area-card-bottom"><span>Enter the archive</span><b>↗</b></div>
+          <div class="area-card-top">
+            <span class="area-icon">∿</span>
+            <span class="area-index">01 / CORE</span>
+          </div>
+
+          <div>
+            <h3>Research & academia</h3>
+            <p>
+              Research projects, papers, technical notes, derivations, and presentations,
+              with clear descriptions of what is complete and what is still in progress.
+            </p>
+          </div>
+
+          <div class="area-card-bottom">
+            <span>Explore research</span><b>↗</b>
+          </div>
         </a>
+
         <a class="area-card" href={`${base}writings/`} data-reveal>
-          <div class="area-card-top"><span class="area-icon">✳</span><span class="area-index">02 / WORDS</span></div>
-          <div><h3>Writings & ideas</h3><p>Essays, Medium articles, recommendations, worldview, ambitions, and thoughts still finding their shape.</p></div>
-          <div class="area-card-bottom"><span>Browse writing</span><b>↗</b></div>
+          <div class="area-card-top">
+            <span class="area-icon">✳</span>
+            <span class="area-index">02 / WORDS</span>
+          </div>
+
+          <div>
+            <h3>Writings & ideas</h3>
+            <p>
+              Essays, Medium articles, books and other recommendations, and thoughts
+              on philosophy, ambitions, and questions I have not settled.
+            </p>
+          </div>
+
+          <div class="area-card-bottom">
+            <span>Read my writing</span><b>↗</b>
+          </div>
         </a>
+
         <a class="area-card" href={`${base}channels/`} data-reveal>
-          <div class="area-card-top"><span class="area-icon">▷</span><span class="area-index">03 / MEDIA</span></div>
-          <div><h3>Channels & media</h3><p>A useful introduction to four YouTube channels and an Instagram account, with their purpose and content.</p></div>
-          <div class="area-card-bottom"><span>See what I make</span><b>↗</b></div>
+          <div class="area-card-top">
+            <span class="area-icon">▷</span>
+            <span class="area-index">03 / MEDIA</span>
+          </div>
+
+          <div>
+            <h3>Channels & media</h3>
+            <p>
+              Four YouTube channels and an Instagram account, with an explanation
+              of what each one covers and why I make that kind of content.
+            </p>
+          </div>
+
+          <div class="area-card-bottom">
+            <span>Explore my channels</span><b>↗</b>
+          </div>
         </a>
+
         <a class="area-card" href={`${base}art/`} data-reveal>
-          <div class="area-card-top"><span class="area-icon">◒</span><span class="area-index">04 / STUDIO</span></div>
-          <div><h3>Art & photography</h3><p>Photographs, paintings, visual experiments, and unfinished things worth keeping.</p></div>
-          <div class="area-card-bottom"><span>Visit the studio</span><b>↗</b></div>
+          <div class="area-card-top">
+            <span class="area-icon">◒</span>
+            <span class="area-index">04 / STUDIO</span>
+          </div>
+
+          <div>
+            <h3>Art & photography</h3>
+            <p>
+              Photographs, paintings, visual experiments, and other creative work,
+              including pieces that are still unfinished.
+            </p>
+          </div>
+
+          <div class="area-card-bottom">
+            <span>View creative work</span><b>↗</b>
+          </div>
         </a>
       </div>
     </div>
@@ -79,21 +534,197 @@ const featuredEntries = researchEntries.slice(0, 3);
   <section class="section">
     <div class="container">
       <div class="section-heading" data-reveal>
-        <div><span class="eyebrow kicker">Research, made navigable</span><h2>A place for the finished, the unfinished, and the still uncertain.</h2></div>
-        <p>The archive distinguishes papers from notes, projects from interests, and polished work from exploratory calculations. Clear status labels give each item the right context.</p>
+        <div>
+          <span class="eyebrow kicker">The research archive</span>
+          <h2>Work at different stages, clearly labelled.</h2>
+        </div>
+
+        <p>
+          Research does not consist only of finished papers. The archive separates
+          publications, ongoing projects, technical notes, and preliminary calculations,
+          so readers can see what each item is and how far it has progressed.
+        </p>
       </div>
-      <div class="notice" data-reveal><span class="notice-mark">i</span><div><strong>Prototype content is marked as sample.</strong> These records demonstrate how the archive works; they are not claims that a paper exists or that a calculation has been completed. Replace them with your own material before sharing the site publicly.</div></div>
+
+      <div class="notice" data-reveal>
+        <span class="notice-mark">i</span>
+        <div>
+          <strong>The entries below are sample content.</strong>
+          They show how the archive is organised. They should not be taken as evidence
+          that a paper has been published or a calculation completed. I will replace
+          these examples with my own material before presenting the archive as a record
+          of my work.
+        </div>
+      </div>
+
       <div class="research-grid">
         {featuredEntries.map((entry) => <ResearchCard entry={entry} />)}
       </div>
-      <div class="button-row"><a class="button" href={`${base}research/`}>View the complete archive ↗</a></div>
+
+      <div class="button-row">
+        <a class="button" href={`${base}research/`}>Browse the research archive ↗</a>
+      </div>
     </div>
   </section>
 
   <section class="closing-banner">
     <div class="container closing-inner">
-      <div><span class="eyebrow">An evolving body of work</span><h2>Not a finished portrait. A working map.</h2></div>
-      <a class="button" href={`${base}about/`}>Explore the site’s purpose ↗</a>
+      <div>
+        <span class="eyebrow">Work in progress</span>
+        <h2>A place to keep track of what I am working on and thinking about.</h2>
+      </div>
+
+      <a class="button" href={`${base}about/`}>More about this site ↗</a>
     </div>
   </section>
+
+  <style is:global>
+    .physics-visuals {
+      padding: 5rem 0;
+    }
+
+    .physics-heading {
+      max-width: 760px;
+      margin: 0 auto 2.5rem;
+      text-align: center;
+    }
+
+    .physics-heading h2 {
+      margin: 0.65rem 0 1rem;
+    }
+
+    .physics-heading p {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .physics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .physics-card {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .physics-art {
+      min-height: 210px;
+      height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
+      margin-bottom: 1.15rem;
+      background: #17232b;
+    }
+
+    .physics-art svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: #f5f3ed;
+    }
+
+    .physics-photo {
+      display: block;
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      transition: transform 350ms ease;
+    }
+
+    .black-hole-art {
+      background: #080b10;
+    }
+
+    .wormhole-art {
+      background: #101820;
+    }
+
+    .holography-art {
+      background: #172b30;
+      color: #f5f3ed;
+    }
+
+    .ads-cft-art {
+      background: #202c3a;
+      color: #f5f3ed;
+    }
+
+    .entanglement-art {
+      background: #24352f;
+      color: #f5f3ed;
+    }
+
+    .physics-card:hover .physics-photo {
+      transform: scale(1.035);
+    }
+
+    .physics-index {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      line-height: 1.5;
+      opacity: 0.75;
+    }
+
+    .physics-card h3 {
+      margin: 0 0 0.65rem;
+    }
+
+    .physics-card p {
+      margin-top: 0;
+      font-size: 0.94rem;
+      line-height: 1.7;
+    }
+
+    .physics-link {
+      display: inline-block;
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .physics-disclaimer {
+      max-width: 760px;
+      margin: 2rem auto 0;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      opacity: 0.75;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .physics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .physics-visuals {
+        padding: 3.5rem 0;
+      }
+
+      .physics-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .physics-art,
+      .physics-photo {
+        height: 220px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .physics-photo {
+        transition: none;
+      }
+    }
+  </style>
 </BaseLayout>

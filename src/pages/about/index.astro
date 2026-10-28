@@ -1,31 +1,1259 @@
+
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
 const base = import.meta.env.BASE_URL;
 ---
-<BaseLayout title="About" description="The intent behind this research-first personal website." active="about">
-  <section class="page-intro">
-    <div class="container">
-      <span class="eyebrow kicker">About / why this exists</span>
-      <h1>A public map of<br /><span style="color: var(--green)">what I’m working through.</span></h1>
-      <p class="intro-copy">A personal website should be more than a list of links. It should make the shape of someone’s work understandable — what they study, what they make, and what they are still trying to figure out.</p>
-    </div>
-  </section>
-  <section class="section-tight" style="padding-top: 0">
-    <div class="container about-grid">
-      <div class="about-statement"><span class="eyebrow kicker">The central thread</span><h2>Curiosity, with <em>structure.</em></h2><p style="color:var(--ink-soft);max-width:360px">A research-first identity, with room for the rest of a creative and intellectual life.</p></div>
-      <div class="about-copy">
-        <p>The main focus here is <strong>theoretical physics</strong>, especially quantum gravity, AdS/CFT, and high-energy theory. The goal is to make research material easy to navigate: projects connect to calculations, calculations connect to papers, and papers sit alongside the questions that motivated them.</p>
-        <p>The archive is intentionally broader than polished publications. Working notes, exploratory derivations, and discontinued ideas can be useful to share when their status and limitations are made clear. An unfinished document should never be mistaken for a validated result.</p>
-        <p>Outside research, the site also collects writing, media channels, photography, painting, and other creative interests. These sections are not distractions from the professional identity; they are simply separate parts of the same person’s public work.</p>
-        <p>This first version is a <strong>working prototype</strong>. Sample entries, channel descriptions, and placeholder artwork are there to demonstrate the structure and should be replaced before the site is announced publicly.</p>
-        <div class="about-list">
-          <div class="about-list-row"><span>Research lens</span><strong>Quantum gravity · AdS/CFT · high-energy theory</strong></div>
-          <div class="about-list-row"><span>Archive principle</span><strong>Everything has a home; status stays visible.</strong></div>
-          <div class="about-list-row"><span>Document access</span><strong>External PDF and source links — no embedded viewers.</strong></div>
-          <div class="about-list-row"><span>Site philosophy</span><strong>Simple to maintain, easy to extend, free to host.</strong></div>
+
+<BaseLayout
+  title="About Me | Shivraj Deshmukh"
+  description="A little about my background, my ambitions in theoretical physics and philosophy, and the research, discipline, writing, and creative work that shape my life."
+>
+  <main class="about-page">
+    <!-- INTRODUCTION -->
+    <section class="about-hero">
+      <div class="about-container">
+        <div class="about-hero-grid">
+          <div class="about-hero-copy">
+            <span class="about-eyebrow">ABOUT ME</span>
+
+            <h1>
+              Trying to understand the universe,
+              <em>and my place in it.</em>
+            </h1>
+
+            <p class="about-lead">
+              I am a research student interested in theoretical physics,
+              particularly the questions surrounding gravity, quantum theory,
+              and the structure of the universe. But the questions that keep
+              me curious extend beyond physics. They concern how we understand
+              reality, what it means to learn something deeply, and how one
+              might build a meaningful life around the pursuit of understanding.
+            </p>
+
+            <p class="about-hero-note">
+              Research, philosophy, discipline, and a life of continued learning.
+            </p>
+          </div>
+
+          <aside class="about-identity" aria-label="A few things about me">
+            <div class="identity-orbit orbit-one"></div>
+            <div class="identity-orbit orbit-two"></div>
+            <div class="identity-core">
+              <span class="identity-symbol">∴</span>
+              <span class="identity-label">Curiosity without a finish line</span>
+            </div>
+
+            <div class="identity-note identity-note-top">
+              <span class="identity-dot"></span>
+              <span>Understand</span>
+            </div>
+
+            <div class="identity-note identity-note-bottom">
+              <span class="identity-dot"></span>
+              <span>Question</span>
+            </div>
+
+            <div class="identity-caption">
+              <span>AN ONGOING PROCESS</span>
+              <p>Learning to ask better questions, one step at a time.</p>
+            </div>
+          </aside>
         </div>
-        <div class="button-row"><a class="button" href={`${base}research/`}>Enter the research archive ↗</a><a class="button secondary" href={`${base}channels/`}>Explore media channels</a></div>
+
+        <div class="about-hero-footer">
+          <span>THEORETICAL PHYSICS</span>
+          <span>PHILOSOPHY</span>
+          <span>LEARNING</span>
+          <span>CREATIVE WORK</span>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- BACKGROUND -->
+    <section class="about-section about-origin">
+      <div class="about-container">
+        <div class="about-section-heading">
+          <span class="about-index">01 / BACKGROUND</span>
+          <h2>Where I come from matters to the story.</h2>
+        </div>
+
+        <div class="about-prose">
+          <p>
+            I come from a farming family. That is an important part of my
+            background and of how I understand my own journey. My interests
+            now take me into abstract questions about gravity, geometry,
+            quantum theory, and the foundations of reality, but my life is
+            not defined by academic work alone.
+          </p>
+
+          <p>
+            I am still figuring things out, learning what I am capable of,
+            and working towards a life that feels worth living. I do not see
+            my background and my intellectual ambitions as competing parts
+            of my identity. They belong to the same story: the story of
+            someone trying to learn, grow, and make something meaningful
+            out of the opportunities and time available to him.
+          </p>
+
+          <p>
+            I am not writing this as a finished account of who I am. I am
+            still becoming that person. What I can describe honestly is the
+            direction I want to move in, the questions I want to pursue,
+            and the kind of effort I want to bring to them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHYSICS -->
+    <section class="about-section about-physics">
+      <div class="about-container">
+        <div class="about-section-heading">
+          <span class="about-index">02 / RESEARCH</span>
+          <h2>The questions that draw me to physics.</h2>
+        </div>
+
+        <div class="about-two-column">
+          <div class="about-prose">
+            <p>
+              My academic interests lie in theoretical physics, especially
+              quantum gravity, three-dimensional gravity, AdS/CFT, and
+              high-energy physics. I am interested in the mathematical
+              structures that let us describe nature, and in what those
+              structures reveal about the relationship between gravity,
+              quantum theory, geometry, and information.
+            </p>
+
+            <p>
+              I am drawn to questions where different descriptions of
+              physical reality meet. How should we understand gravity
+              at the quantum level? What can lower-dimensional models
+              teach us about more general gravitational systems? What does
+              holography tell us about the relationship between spacetime
+              and quantum theories? These are examples of the kinds of
+              questions that motivate my studies.
+            </p>
+
+            <p>
+              For me, doing theoretical physics is not simply a matter of
+              collecting interesting ideas. It requires learning the
+              mathematics carefully, understanding where equations come
+              from, following derivations step by step, and checking whether
+              a claim actually follows from the assumptions being made.
+              I value the work behind a result as much as the result itself.
+            </p>
+          </div>
+
+          <aside class="about-side-note">
+            <span class="side-note-label">AREAS I KEEP RETURNING TO</span>
+
+            <ul class="topic-list">
+              <li>
+                <span class="topic-number">01</span>
+                <span>
+                  <strong>Quantum gravity</strong>
+                  <small>Questions about gravity and quantum theory</small>
+                </span>
+              </li>
+              <li>
+                <span class="topic-number">02</span>
+                <span>
+                  <strong>Three-dimensional gravity</strong>
+                  <small>Geometric and gauge-theoretic descriptions</small>
+                </span>
+              </li>
+              <li>
+                <span class="topic-number">03</span>
+                <span>
+                  <strong>AdS/CFT and holography</strong>
+                  <small>Connections between gravity and quantum field theory</small>
+                </span>
+              </li>
+              <li>
+                <span class="topic-number">04</span>
+                <span>
+                  <strong>High-energy theory</strong>
+                  <small>Mathematical structures underlying physical theories</small>
+                </span>
+              </li>
+            </ul>
+
+            <a class="about-text-link" href={`${base}research/`}>
+              Explore my research archive <span aria-hidden="true">↗</span>
+            </a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE BIGGER QUESTION -->
+    <section class="about-philosophy">
+      <div class="about-container philosophy-inner">
+        <span class="about-eyebrow">03 / THE BIGGER PICTURE</span>
+
+        <blockquote>
+          I want to understand the universe as deeply as I can,
+          and to remain honest about how much there is still to understand.
+        </blockquote>
+
+        <div class="philosophy-copy">
+          <p>
+            My ambitions are not limited to mastering a particular subject
+            or completing a set of academic milestones. I am interested in
+            the larger picture: how our different ways of understanding
+            the world fit together, where our explanations reach their
+            limits, and whether there is a deeper unity beneath the
+            theories we currently have.
+          </p>
+
+          <p>
+            The possibility of a unified description of nature is one of
+            the questions that interests me. I do not assume that such a
+            theory must exist, or that the universe necessarily has the
+            kind of simplicity we might hope to find. I am interested in
+            pursuing the question seriously, including the possibility
+            that the answer may be more complicated than we expect.
+          </p>
+
+          <p>
+            This is where physics and philosophy meet for me. Physics gives
+            us precise mathematical frameworks and ways to test our ideas.
+            Philosophy helps us examine the assumptions, concepts, and
+            questions that shape our understanding. Neither removes the
+            need for the other kind of care: being precise about what we
+            know, questioning what we take for granted, and distinguishing
+            a compelling possibility from an established result.
+          </p>
+        </div>
+
+        <div class="philosophy-footnote">
+          <span class="footnote-line"></span>
+          <span>Curiosity is a starting point, not a substitute for evidence.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCIPLINE -->
+    <section class="about-section about-discipline">
+      <div class="about-container">
+        <div class="about-section-heading">
+          <span class="about-index">04 / DISCIPLINE</span>
+          <h2>Learning to work at the limits of my ability.</h2>
+        </div>
+
+        <div class="about-two-column discipline-grid">
+          <div class="about-prose">
+            <p>
+              There is another side to the life I want to build: the effort
+              of learning difficult things, training hard, and testing my
+              physical and mental limits. I do not think of these as
+              separate from the person I am trying to become.
+            </p>
+
+            <p>
+              Research can demand patience with problems that do not yield
+              quickly. Learning a difficult subject means accepting that
+              understanding takes time, that mistakes are part of the
+              process, and that progress is not always immediately visible.
+              Training teaches its own lessons about consistency, effort,
+              recovery, and the difference between wanting an outcome and
+              doing the work required to pursue it.
+            </p>
+
+            <p>
+              I do not mean that physical training and intellectual work
+              are the same thing. They are not. But both ask something
+              from you beyond enthusiasm. They ask you to show up, pay
+              attention, work through difficulty, and keep improving
+              without expecting every session or every day to feel
+              extraordinary.
+            </p>
+
+            <p>
+              I want to become more capable, physically and intellectually,
+              while learning to recognise the limits of my current
+              understanding. Ambition matters to me, but so does the
+              discipline to examine my own work honestly.
+            </p>
+          </div>
+
+          <div class="discipline-card">
+            <div class="discipline-card-top">
+              <span class="discipline-mark">↗</span>
+              <span class="side-note-label">A CONTINUING PRACTICE</span>
+            </div>
+
+            <div class="discipline-item">
+              <span class="discipline-line"></span>
+              <div>
+                <h3>Study deeply</h3>
+                <p>Work towards understanding, rather than familiarity alone.</p>
+              </div>
+            </div>
+
+            <div class="discipline-item">
+              <span class="discipline-line"></span>
+              <div>
+                <h3>Train consistently</h3>
+                <p>Keep making an effort to develop physical capability.</p>
+              </div>
+            </div>
+
+            <div class="discipline-item">
+              <span class="discipline-line"></span>
+              <div>
+                <h3>Question honestly</h3>
+                <p>Be willing to revisit an idea when the reasoning does not hold.</p>
+              </div>
+            </div>
+
+            <div class="discipline-item">
+              <span class="discipline-line"></span>
+              <div>
+                <h3>Keep learning</h3>
+                <p>Leave room to change my mind as I understand more.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEYOND RESEARCH -->
+    <section class="about-section about-beyond">
+      <div class="about-container">
+        <div class="about-section-heading">
+          <span class="about-index">05 / BEYOND RESEARCH</span>
+          <h2>A life should have room for more than one kind of curiosity.</h2>
+        </div>
+
+        <div class="about-prose about-prose-wide">
+          <p>
+            Physics occupies a central place in my intellectual life, but
+            it is not the only thing I care about. I also want to read
+            widely, write about ideas, think about how I see the world,
+            and make room for creative work. These interests do not always
+            need to support my research or turn into something productive.
+            They are worth pursuing in their own right.
+          </p>
+
+          <p>
+            Reading lets me encounter arguments and perspectives beyond
+            my immediate field. Writing gives me a way to work through
+            ideas, explain what I think, and discover where my understanding
+            is still incomplete. I am interested in recommendations and
+            works that leave something to think about, whether they concern
+            science, philosophy, literature, or other parts of human life.
+          </p>
+
+          <p>
+            I also care about photography, painting, and other forms of
+            creative expression. They offer ways of noticing and representing
+            things that are different from the language of equations and
+            formal arguments. I do not want to force every interest into
+            a single identity. Some things can be connected; others can
+            simply coexist.
+          </p>
+
+          <p>
+            The aim is not to present a perfectly balanced or finished
+            version of myself. It is to leave room for different kinds of
+            attention: the precision needed for a calculation, the patience
+            needed to learn a skill, the openness needed to read someone
+            else's perspective, and the freedom to make something without
+            having to justify it as research.
+          </p>
+        </div>
+
+        <div class="interest-grid">
+          <a class="interest-card" href={`${base}writings/`}>
+            <span class="interest-number">01</span>
+            <span class="interest-card-content">
+              <strong>Writing & ideas</strong>
+              <span>Essays, reflections, academic writing, and notes.</span>
+            </span>
+            <span class="interest-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a class="interest-card" href={`${base}art/`}>
+            <span class="interest-number">02</span>
+            <span class="interest-card-content">
+              <strong>Photography & art</strong>
+              <span>Images, paintings, and creative experiments.</span>
+            </span>
+            <span class="interest-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a class="interest-card" href={`${base}media/`}>
+            <span class="interest-number">03</span>
+            <span class="interest-card-content">
+              <strong>Videos & public work</strong>
+              <span>Different channels for different subjects and interests.</span>
+            </span>
+            <span class="interest-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY THIS WEBSITE EXISTS -->
+    <section class="about-section about-website">
+      <div class="about-container">
+        <div class="about-section-heading">
+          <span class="about-index">06 / THIS WEBSITE</span>
+          <h2>A record of what I am learning, making, and questioning.</h2>
+        </div>
+
+        <div class="about-two-column website-grid">
+          <div class="about-prose">
+            <p>
+              I wanted a place of my own where my work could live together
+              without everything being reduced to a résumé, a publication
+              list, or a social-media profile. This website is intended
+              to be that place: a public record of the things I study,
+              the ideas I develop, the work I finish, and the questions
+              I have not resolved.
+            </p>
+
+            <p>
+              The research archive is the centre of the site. It is where
+              I want to organise research projects, technical notes,
+              preprints, academic writings, presentations, and related
+              material. I also want to make room for exploratory work,
+              unfinished notes, and ideas I eventually decide not to
+              pursue. Their status should be clear, so that a working
+              draft is not mistaken for a finished result.
+            </p>
+
+            <p>
+              The other sections provide space for writing, reading,
+              recommendations, creative work, and the videos and other
+              material I publish. Each has its own purpose. They belong
+              together because they are all part of what I spend my time
+              thinking about and making, not because they must all be
+              about the same subject.
+            </p>
+
+            <p>
+              I expect the site to change as my work and interests change.
+              Some things will become more developed; some will remain
+              rough; some may be abandoned. I would rather make that
+              process visible than pretend that everything I put here
+              represents a final position.
+            </p>
+          </div>
+
+          <aside class="website-principles">
+            <span class="side-note-label">HOW I WANT THIS SPACE TO WORK</span>
+
+            <div class="principle">
+              <span class="principle-number">01</span>
+              <div>
+                <h3>Open</h3>
+                <p>Make research notes and other work accessible where possible.</p>
+              </div>
+            </div>
+
+            <div class="principle">
+              <span class="principle-number">02</span>
+              <div>
+                <h3>Clear</h3>
+                <p>Distinguish published work from drafts, experiments, and unfinished ideas.</p>
+              </div>
+            </div>
+
+            <div class="principle">
+              <span class="principle-number">03</span>
+              <div>
+                <h3>Independent</h3>
+                <p>Keep a personal space that is not defined by one platform.</p>
+              </div>
+            </div>
+
+            <div class="principle">
+              <span class="principle-number">04</span>
+              <div>
+                <h3>Evolving</h3>
+                <p>Let the archive grow as my understanding and interests develop.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="about-closing">
+      <div class="about-container closing-inner">
+        <span class="about-eyebrow">STILL IN PROGRESS</span>
+
+        <h2>
+          I have a long way to go.
+          <em>That is part of the point.</em>
+        </h2>
+
+        <p>
+          I am still learning the subjects I care about, still testing my
+          abilities, and still working out what kind of person I want to
+          become. I do not have a final answer to the questions that
+          motivate me. For now, I want to keep studying carefully,
+          thinking honestly, making things, and following the questions
+          that seem worth my time.
+        </p>
+
+        <p>
+          If you are here for the physics, the writing, or something
+          creative, I hope you find something worth exploring.
+        </p>
+
+        <div class="closing-actions">
+          <a class="about-button about-button-primary" href={`${base}research/`}>
+            Visit the research archive <span aria-hidden="true">↗</span>
+          </a>
+
+          <a class="about-button about-button-secondary" href={`${base}writings/`}>
+            Read my writing
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .about-page {
+      --about-ink: #18252e;
+      --about-muted: #62717b;
+      --about-line: #dce4e8;
+      --about-paper: #fbfaf7;
+      --about-blue: #dcebf1;
+      --about-accent: #b75e3f;
+      color: var(--about-ink);
+      background: var(--about-paper);
+      overflow: hidden;
+    }
+
+    .about-page *,
+    .about-page *::before,
+    .about-page *::after {
+      box-sizing: border-box;
+    }
+
+    .about-container {
+      width: min(1120px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .about-hero {
+      padding: 88px 0 26px;
+      background:
+        radial-gradient(ellipse at 85% 18%, rgba(202, 224, 233, 0.48), transparent 35%),
+        var(--about-paper);
+    }
+
+    .about-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(290px, 0.8fr);
+      align-items: center;
+      gap: clamp(42px, 8vw, 110px);
+    }
+
+    .about-eyebrow,
+    .about-index,
+    .side-note-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 750;
+      letter-spacing: 0.15em;
+      line-height: 1.5;
+    }
+
+    .about-eyebrow {
+      color: var(--about-accent);
+    }
+
+    .about-hero h1 {
+      max-width: 700px;
+      margin: 22px 0 24px;
+      font-size: clamp(3rem, 6.3vw, 5.65rem);
+      font-weight: 580;
+      line-height: 0.99;
+      letter-spacing: -0.065em;
+    }
+
+    .about-hero h1 em,
+    .about-closing h2 em {
+      color: #507b8d;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+    }
+
+    .about-lead {
+      max-width: 640px;
+      margin: 0;
+      color: #43545e;
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+      line-height: 1.85;
+    }
+
+    .about-hero-note {
+      margin: 30px 0 0;
+      padding-left: 15px;
+      border-left: 2px solid var(--about-accent);
+      color: var(--about-muted);
+      font-size: 0.91rem;
+      line-height: 1.7;
+    }
+
+    .about-identity {
+      position: relative;
+      display: grid;
+      min-height: 400px;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .identity-orbit {
+      position: absolute;
+      z-index: -1;
+      width: 290px;
+      height: 290px;
+      border: 1px solid rgba(76, 119, 138, 0.3);
+      border-radius: 50%;
+    }
+
+    .orbit-one {
+      transform: rotate(-24deg) scaleX(0.72);
+    }
+
+    .orbit-two {
+      width: 340px;
+      height: 210px;
+      transform: rotate(42deg);
+      border-color: rgba(183, 94, 63, 0.32);
+    }
+
+    .identity-core {
+      display: flex;
+      width: 205px;
+      height: 205px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 24px;
+      border: 1px solid rgba(76, 119, 138, 0.25);
+      border-radius: 50%;
+      background: rgba(230, 240, 244, 0.85);
+      text-align: center;
+    }
+
+    .identity-symbol {
+      color: #507b8d;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 4.2rem;
+      line-height: 1;
+    }
+
+    .identity-label {
+      max-width: 130px;
+      color: #425660;
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+
+    .identity-note {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--about-line);
+      border-radius: 30px;
+      background: var(--about-paper);
+      color: #455761;
+      font-size: 0.78rem;
+    }
+
+    .identity-note-top {
+      top: 58px;
+      right: 0;
+    }
+
+    .identity-note-bottom {
+      bottom: 100px;
+      left: 0;
+    }
+
+    .identity-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--about-accent);
+    }
+
+    .identity-caption {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+    }
+
+    .identity-caption span {
+      color: var(--about-muted);
+      font-size: 0.64rem;
+      font-weight: 750;
+      letter-spacing: 0.15em;
+    }
+
+    .identity-caption p {
+      margin: 7px 0 0;
+      color: #40545f;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.05rem;
+      font-style: italic;
+    }
+
+    .about-hero-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px 24px;
+      margin-top: 70px;
+      padding: 20px 0;
+      border-top: 1px solid var(--about-line);
+      color: #697780;
+      font-size: 0.66rem;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+    }
+
+    .about-section {
+      padding: clamp(72px, 9vw, 116px) 0;
+    }
+
+    .about-origin {
+      background: #fff;
+    }
+
+    .about-section-heading {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.55fr) minmax(0, 1.45fr);
+      align-items: start;
+      gap: 36px;
+      margin-bottom: 44px;
+    }
+
+    .about-index {
+      padding-top: 12px;
+      color: var(--about-accent);
+    }
+
+    .about-section-heading h2 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      font-weight: 550;
+      line-height: 1.13;
+      letter-spacing: -0.045em;
+    }
+
+    .about-prose {
+      max-width: 760px;
+      margin-left: auto;
+    }
+
+    .about-prose p,
+    .philosophy-copy p {
+      margin: 0 0 22px;
+      color: #465761;
+      font-size: 1.025rem;
+      line-height: 1.95;
+    }
+
+    .about-prose p:last-child,
+    .philosophy-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-physics {
+      background: #f0f5f6;
+    }
+
+    .about-two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.75fr);
+      gap: clamp(42px, 7vw, 88px);
+      align-items: start;
+    }
+
+    .about-side-note {
+      padding: 28px;
+      border: 1px solid #d8e2e5;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .side-note-label {
+      color: #6c7a82;
+      font-size: 0.65rem;
+    }
+
+    .topic-list {
+      display: grid;
+      gap: 0;
+      margin: 20px 0 24px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .topic-list li {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
+      padding: 17px 0;
+      border-bottom: 1px solid #dce5e8;
+    }
+
+    .topic-number {
+      padding-top: 2px;
+      color: var(--about-accent);
+      font-size: 0.72rem;
+      font-weight: 750;
+    }
+
+    .topic-list strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.93rem;
+      font-weight: 650;
+    }
+
+    .topic-list small {
+      display: block;
+      color: var(--about-muted);
+      font-size: 0.78rem;
+      line-height: 1.65;
+    }
+
+    .about-text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #385f70;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .about-text-link:hover {
+      color: var(--about-accent);
+    }
+
+    .about-philosophy {
+      padding: clamp(76px, 10vw, 130px) 0;
+      background: #172832;
+      color: #f6f4ef;
+    }
+
+    .philosophy-inner {
+      max-width: 950px;
+    }
+
+    .about-philosophy .about-eyebrow {
+      color: #e2a18a;
+    }
+
+    .about-philosophy blockquote {
+      max-width: 920px;
+      margin: 30px 0 44px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.1rem, 5vw, 4.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    .philosophy-copy {
+      max-width: 740px;
+      margin-left: auto;
+    }
+
+    .philosophy-copy p {
+      color: #d1dce0;
+    }
+
+    .philosophy-footnote {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-top: 42px;
+      color: #e2c2b6;
+      font-size: 0.84rem;
+      line-height: 1.6;
+    }
+
+    .footnote-line {
+      width: 34px;
+      height: 1px;
+      flex: 0 0 auto;
+      background: #d78e73;
+    }
+
+    .about-discipline {
+      background: #fff;
+    }
+
+    .discipline-grid {
+      align-items: stretch;
+    }
+
+    .discipline-card {
+      padding: 30px;
+      background: #edf3f3;
+    }
+
+    .discipline-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .discipline-mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 1px solid #ccdadd;
+      border-radius: 50%;
+      color: #4e7685;
+      font-size: 1.1rem;
+    }
+
+    .discipline-item {
+      display: grid;
+      grid-template-columns: 15px 1fr;
+      gap: 13px;
+      padding: 19px 0;
+      border-top: 1px solid #d6e1e3;
+    }
+
+    .discipline-line {
+      width: 7px;
+      height: 7px;
+      margin-top: 7px;
+      border-radius: 50%;
+      background: var(--about-accent);
+    }
+
+    .discipline-item h3,
+    .principle h3 {
+      margin: 0 0 6px;
+      font-size: 0.97rem;
+      font-weight: 700;
+    }
+
+    .discipline-item p,
+    .principle p {
+      margin: 0;
+      color: #60717a;
+      font-size: 0.83rem;
+      line-height: 1.7;
+    }
+
+    .about-beyond {
+      background: #f5f2ec;
+    }
+
+    .about-prose-wide {
+      max-width: 850px;
+    }
+
+    .interest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 48px;
+    }
+
+    .interest-card {
+      display: grid;
+      grid-template-columns: 30px 1fr 18px;
+      align-items: start;
+      gap: 10px;
+      min-height: 155px;
+      padding: 23px 20px;
+      border: 1px solid #deded7;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--about-ink);
+      text-decoration: none;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+    }
+
+    .interest-card:hover {
+      transform: translateY(-3px);
+      border-color: #a9c1ca;
+      background: #fff;
+    }
+
+    .interest-number {
+      padding-top: 3px;
+      color: var(--about-accent);
+      font-size: 0.7rem;
+      font-weight: 750;
+    }
+
+    .interest-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .interest-card-content strong {
+      font-size: 0.96rem;
+      font-weight: 700;
+    }
+
+    .interest-card-content > span {
+      color: var(--about-muted);
+      font-size: 0.81rem;
+      line-height: 1.7;
+    }
+
+    .interest-arrow {
+      color: #557e8e;
+      font-size: 1rem;
+    }
+
+    .about-website {
+      background: #fff;
+    }
+
+    .website-grid {
+      align-items: start;
+    }
+
+    .website-principles {
+      padding: 28px;
+      border: 1px solid var(--about-line);
+      background: #fbfcfa;
+    }
+
+    .website-principles > .side-note-label {
+      margin-bottom: 20px;
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
+      padding: 18px 0;
+      border-top: 1px solid var(--about-line);
+    }
+
+    .principle-number {
+      color: var(--about-accent);
+      font-size: 0.75rem;
+      font-weight: 750;
+    }
+
+    .about-closing {
+      padding: clamp(76px, 10vw, 128px) 0;
+      background:
+        radial-gradient(ellipse at 90% 90%, rgba(185, 211, 220, 0.35), transparent 38%),
+        #e6eff1;
+    }
+
+    .closing-inner {
+      max-width: 900px;
+    }
+
+    .about-closing h2 {
+      max-width: 820px;
+      margin: 23px 0 28px;
+      font-size: clamp(2.65rem, 6vw, 5rem);
+      font-weight: 550;
+      line-height: 1.04;
+      letter-spacing: -0.06em;
+    }
+
+    .about-closing > .about-container > p {
+      max-width: 710px;
+      margin: 0 0 18px;
+      color: #465b65;
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .closing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .about-button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 18px;
+      border: 1px solid #203944;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition:
+        background 180ms ease,
+        color 180ms ease,
+        border-color 180ms ease;
+    }
+
+    .about-button-primary {
+      background: #203944;
+      color: #fff;
+    }
+
+    .about-button-primary:hover {
+      background: #385f70;
+      border-color: #385f70;
+    }
+
+    .about-button-secondary {
+      background: transparent;
+      color: #203944;
+    }
+
+    .about-button-secondary:hover {
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    @media (max-width: 800px) {
+      .about-hero {
+        padding-top: 64px;
+      }
+
+      .about-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .about-identity {
+        min-height: 360px;
+      }
+
+      .about-hero-footer {
+        margin-top: 45px;
+      }
+
+      .about-section-heading {
+        grid-template-columns: 1fr;
+        gap: 13px;
+        margin-bottom: 30px;
+      }
+
+      .about-index {
+        padding-top: 0;
+      }
+
+      .about-two-column {
+        grid-template-columns: 1fr;
+        gap: 38px;
+      }
+
+      .about-prose {
+        max-width: none;
+      }
+
+      .interest-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .interest-card {
+        min-height: 110px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .about-container {
+        width: min(100% - 36px, 1120px);
+      }
+
+      .about-hero {
+        padding-top: 48px;
+      }
+
+      .about-hero h1 {
+        font-size: clamp(2.75rem, 13vw, 4rem);
+      }
+
+      .about-identity {
+        min-height: 320px;
+        transform: scale(0.94);
+      }
+
+      .identity-orbit {
+        max-width: 90vw;
+      }
+
+      .about-hero-footer {
+        justify-content: flex-start;
+        column-gap: 18px;
+        font-size: 0.61rem;
+      }
+
+      .about-section {
+        padding: 68px 0;
+      }
+
+      .about-section-heading h2 {
+        font-size: 2.2rem;
+      }
+
+      .about-prose p,
+      .philosophy-copy p {
+        font-size: 0.97rem;
+        line-height: 1.85;
+      }
+
+      .about-side-note,
+      .discipline-card,
+      .website-principles {
+        padding: 22px;
+      }
+
+      .about-philosophy blockquote {
+        font-size: 2.35rem;
+      }
+
+      .about-closing h2 {
+        font-size: 2.85rem;
+      }
+
+      .closing-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .about-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .interest-card,
+      .about-button {
+        transition: none;
+      }
+
+      .interest-card:hover {
+        transform: none;
+      }
+    }
+  </style>
 </BaseLayout>
